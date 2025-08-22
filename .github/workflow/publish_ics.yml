@@ -1,0 +1,53 @@
+name: Publish ICS (hourly)
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # hourly UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build ICS
+        run: |
+          python src/usopen_calendar.py
+          # Add .nojekyll so GitHub Pages serves raw files without Jekyll processing
+          echo > .nojekyll
+          # Optional: a simple index page with a subscribe link
+          cat > index.html <<'EOF'
+          <!doctype html>
+          <meta charset="utf-8">
+          <title>US Open 2025 Calendar</title>
+          <h1>US Open 2025 Calendar</h1>
+          <p>Subscribe with this URL:</p>
+          <pre id="url"></pre>
+          <script>
+            const url = location.origin + location.pathname + (location.pathname.endsWith('/') ? '' : '/') + 'usopen_schedule.ics';
+            document.getElementById('url').textContent = url;
+          </script>
+          <p>Apple Calendar users can also try the same URL with <code>webcal://</code>.</p>
+          EOF
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
+          force_orphan: true

@@ -1,6 +1,10 @@
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from ics import Calendar, Event
+from helpers_extras import add_vcalendar_extras, add_vevent_extras
+
+ET = ZoneInfo("America/New_York")
 
 BASE_URL = "https://www.usopen.org/en_US/scores/feeds/2025/schedule/scheduleDays.json"
 
@@ -22,7 +26,7 @@ def parse_schedule():
         tourn_day = day.get("tournDay", 0)
         feed_url = day.get("feedUrl")
 
-        if not feed_url or (tourn_day is None or tourn_day < 5):
+        if not feed_url or (tourn_day is None or tourn_day < 7):
             continue
 
         day_data = fetch_json(feed_url)
@@ -46,9 +50,11 @@ def parse_schedule():
                 )
 
                 start_epoch = match_data.get("startEpoch") or court.get("startEpoch")
-                start_time = (
-                    datetime.utcfromtimestamp(start_epoch) if start_epoch else None
-                )
+                if start_epoch:
+                    # interpret epoch as UTC, then convert to ET (EST/EDT)
+                    start_time = datetime.fromtimestamp(start_epoch, tz=timezone.utc).astimezone(ET)
+                else:
+                    start_time = None
 
                 matches_all.append({
                     "title": f"{players_team1} vs {players_team2}",
@@ -62,22 +68,27 @@ def parse_schedule():
 def create_calendar(matches):
     cal = Calendar()
 
+
     for m in matches:
         event = Event()
-        event.name = m["title"]
+        event.summary = m["title"]
         event.location = m["court"]
         event.description = m["description"]
+
         if m["start_time"]:
-            event.begin = m["start_time"]
-            event.end = m["start_time"] + timedelta(hours=2)
-        cal.events.add(event)
+            dt_et = m["start_time"]
+            event.begin = dt_et
+            event.end = dt_et + timedelta(hours=2)
+
+        cal.events.append(event)
 
     return cal
+
 
 if __name__ == "__main__":
     matches = parse_schedule()
     cal = create_calendar(matches)
 
     with open("usopen_schedule.ics", "w", encoding="utf-8") as f:
-        f.writelines(cal.serialize_iter())
+        f.writelines(cal.serialize())
     print(f"✅ Created usopen_schedule.ics with {len(matches)} matches")

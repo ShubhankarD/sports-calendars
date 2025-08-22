@@ -1,3 +1,4 @@
 requests
 beautifulsoup4
-ics
+git+https://github.com/ics-py/ics-py.git
+tzdata
