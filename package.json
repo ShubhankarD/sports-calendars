@@ -1,0 +1,8 @@
+{
+    "name": "sports-calendars",
+    "version": "0.1.0",
+    "description": "Python app to generate dynamic .ics calendar from US Open Tennis website.",
+    "main": "src/main.py",
+    "author": "",
+    "license": "MIT"
+}
