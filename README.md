@@ -6,11 +6,11 @@ This repo builds an `.ics` feed hourly and publishes it to GitHub Pages.
 
 After enabling Pages (see below), your URL will be:
 
-https://<ShubhankarD>.github.io/<sports-calendars>/usopen_schedule.ics
+https://ShubhankarD.github.io/sports-calendars/usopen_schedule.ics
 
 Apple Calendar users can also try:
 
-webcal://<ShubhakarD>.github.io/<sports-calendars>/usopen_schedule.ics
+webcal://ShubhakarD.github.io/sports-calendars/usopen_schedule.ics
 
 ## How it works
 
