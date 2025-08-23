@@ -12,6 +12,7 @@ build/
 
 # VS Code
 .vscode/
+.venv/
 
 # OS files
 .DS_Store
