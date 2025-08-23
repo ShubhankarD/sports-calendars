@@ -17,20 +17,29 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.12'   # <- real version
 
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build ICS
+      - name: Build ICS into site/
         run: |
+          set -e
+          echo "📁 CWD: $(pwd)"
+          mkdir -p site
           python src/usopen_calendar.py
-          # Add .nojekyll so GitHub Pages serves raw files without Jekyll processing
-          echo > .nojekyll
-          # Optional: a simple index page with a subscribe link
-          cat > index.html <<'EOF'
+          # Prove it exists at the repo root first
+          ls -la
+          test -f usopen_schedule.ics || (echo "❌ usopen_schedule.ics not found at repo root" && exit 1)
+
+          # Move to publish dir
+          mv usopen_schedule.ics site/
+          echo > site/.nojekyll
+
+          # Minimal index for sanity check
+          cat > site/index.html <<'EOF'
           <!doctype html>
           <meta charset="utf-8">
           <title>US Open 2025 Calendar</title>
@@ -38,16 +47,25 @@ jobs:
           <p>Subscribe with this URL:</p>
           <pre id="url"></pre>
           <script>
-            const url = location.origin + location.pathname + (location.pathname.endsWith('/') ? '' : '/') + 'usopen_schedule.ics';
-            document.getElementById('url').textContent = url;
+            const base = location.origin + location.pathname.replace(/\/?$/, '/');
+            document.getElementById('url').textContent = base + 'usopen_schedule.ics';
           </script>
           <p>Apple Calendar users can also try the same URL with <code>webcal://</code>.</p>
           EOF
+
+          echo "📄 Contents of site/:"
+          ls -la site
+
+      - name: Upload site as artifact (debug)
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: site
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          publish_dir: site          # <- publish only this folder
           publish_branch: gh-pages
           force_orphan: true
