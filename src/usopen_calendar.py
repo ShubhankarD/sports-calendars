@@ -2,7 +2,7 @@
 import hashlib
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
-from typing import Dict, Union, Optional
+from typing import Dict, Union, Optional, List
 
 import requests
 from ics import Calendar, Event
@@ -31,7 +31,6 @@ def add_vcalendar_extras(cal: Calendar, extras: Dict[str, Union[str, tuple]]):
       - "string" -> value with no params
       - ("value", {"PARAM": ["VAL"]}) -> value with params
     """
-    # from ics.grammar.parse import ContentLine  # works in 0.7.x and 0.8-dev
     for name, val in extras.items():
         if isinstance(val, tuple):
             value, params = val
@@ -50,7 +49,7 @@ def add_vevent_extras(event: Event, extras: Dict[str, Union[str, tuple]]):
             event.extra.append(ContentLine(name=name, params={}, value=val))
 
 
-# ---------- Core parsing ----------
+# ---------- Core parsing: names ----------
 def _join_names(team: Optional[list]) -> str:
     """Join A/B display names for a team if present."""
     team = team or [{}]
@@ -60,6 +59,61 @@ def _join_names(team: Optional[list]) -> str:
     return joined
 
 
+# ---------- NEW: nation → flag helpers ----------
+# 3-letter IOC/NOC → ISO-3166 alpha-2 (extend as needed)
+IOC_TO_ISO2 = {
+    # Americas
+    "USA": "US", "CAN": "CA", "MEX": "MX", "ARG": "AR", "BRA": "BR", "CHI": "CL", "COL": "CO", "PER": "PE",
+    # Europe
+    "ESP": "ES", "FRA": "FR", "GBR": "GB", "GER": "DE", "ITA": "IT", "NED": "NL", "SUI": "CH", "SWE": "SE",
+    "NOR": "NO", "DEN": "DK", "BEL": "BE", "AUT": "AT", "POR": "PT", "POL": "PL", "CZE": "CZ", "SVK": "SK",
+    "SLO": "SI", "CRO": "HR", "SRB": "RS", "UKR": "UA", "ROU": "RO", "GRE": "GR", "GRC": "GR",
+    # Asia / Oceania / Africa
+    "AUS": "AU", "NZL": "NZ", "CHN": "CN", "JPN": "JP", "KOR": "KR", "TPE": "TW", "HKG": "HK", "IND": "IN",
+    "KAZ": "KZ", "EGY": "EG", "MAR": "MA", "TUN": "TN", "RSA": "ZA", "MON": "MC", "MDA": "MD", "GEO": "GE",
+    "LTU": "LT", "LAT": "LV", "EST": "EE", "TUR": "TR", "BUL": "BG", "BIH": "BA", "MNE": "ME", "MKD": "MK",
+}
+
+def _flag_emoji(iso2: Optional[str]) -> str:
+    """Convert ISO2 country code to flag emoji; fallback to tennis ball."""
+    if not iso2:
+        return "🎾"
+    code = iso2.strip().upper()
+    if len(code) != 2 or not code.isalpha():
+        return "🎾"
+    base = 0x1F1E6
+    return chr(base + (ord(code[0]) - 65)) + chr(base + (ord(code[1]) - 65))
+
+def _team_flags(team: Optional[list]) -> str:
+    """
+    Team shape in feed: [{ ..., nationA: 'USA', nationB: 'MEX', ... }]
+    - Singles: one flag
+    - Doubles same nation: one flag
+    - Doubles mixed nations: '🇺🇸/🇲🇽'
+    """
+    t = (team or [{}])[0]
+    iocs: List[Optional[str]] = [t.get("nationA"), t.get("nationB")]
+    isos: List[str] = []
+    for ioc in iocs:
+        if not ioc:
+            continue
+        iso = IOC_TO_ISO2.get(ioc.strip().upper())
+        if iso and iso not in isos:
+            isos.append(iso)
+    if not isos:
+        return "🎾"
+    if len(isos) == 1:
+        return _flag_emoji(isos[0])
+    # compact: show at most two distinct flags in order seen
+    return "/".join(_flag_emoji(c) for c in isos[:2])
+
+def _team_label(team: Optional[list]) -> str:
+    """Compose '<flags> NameA & NameB' using the existing _join_names()."""
+    names = _join_names(team)
+    return f"{_team_flags(team)} {names}".strip()
+
+
+# ---------- Core parsing ----------
 def parse_schedule():
     schedule_data = fetch_json(BASE_URL)
     event_days = schedule_data.get("eventDays", [])
@@ -69,7 +123,7 @@ def parse_schedule():
         tourn_day = day.get("tournDay", 0)
         feed_url = day.get("feedUrl")
         # filter early practice/qualifying days if needed
-        if not feed_url or (tourn_day is None or tourn_day < 7):
+        if not feed_url or (tourn_day is None or tourn_day < 5):
             continue
 
         day_data = fetch_json(feed_url)
@@ -79,8 +133,9 @@ def parse_schedule():
         for court in courts:
             court_name = court.get("courtName", "Unknown Court")
             for match_data in court.get("matches", []):
-                players_team1 = _join_names(match_data.get("team1"))
-                players_team2 = _join_names(match_data.get("team2"))
+                # (changed) flags + names
+                players_team1 = _team_label(match_data.get("team1"))
+                players_team2 = _team_label(match_data.get("team2"))
 
                 # Some feeds have startEpoch on match OR on court
                 start_epoch = match_data.get("startEpoch") or court.get("startEpoch")
@@ -90,8 +145,8 @@ def parse_schedule():
                 )
 
                 title = f"{players_team1} vs {players_team2}".strip()
-                # if both sides missing, avoid " vs "
-                if title.lower() == "vs" or title == "vs":
+                # if both sides missing, avoid " vs " or "🎾 vs 🎾"
+                if title.strip().lower() in {"vs", "🎾 vs 🎾"}:
                     title = "Match (TBD)"
 
                 matches_all.append({
