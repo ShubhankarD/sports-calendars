@@ -39,6 +39,5 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-
-.ics
 .vscode/
 src/usopen_calendar_old.py
