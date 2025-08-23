@@ -41,4 +41,4 @@ yarn-debug.log*
 yarn-
 .ics
 .vscode/
-usopen_calendar.py
+src/usopen_calendar.py
