@@ -26,7 +26,7 @@ jobs:
 
       - name: Build ICS
         run: |
-          python src/usopen_calendar_cli.py
+          python src/usopen_calendar.py
           # Add .nojekyll so GitHub Pages serves raw files without Jekyll processing
           echo > .nojekyll
           # Optional: a simple index page with a subscribe link

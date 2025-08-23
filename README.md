@@ -14,7 +14,7 @@ webcal://ShubhakarD.github.io/sports-calendars/usopen_schedule.ics
 
 ## How it works
 
-- `src/usopen_calendar.py` fetches US Open feeds and writes `usopen_schedule.ics`.
+- `src/usopen_calenda.py` fetches US Open feeds and writes `usopen_schedule.ics`.
 - A GitHub Action runs hourly and pushes the file to the `gh-pages` branch.
 - GitHub Pages serves the file at a stable URL that calendar apps can poll.
 
