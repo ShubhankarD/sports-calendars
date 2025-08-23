@@ -123,7 +123,7 @@ def parse_schedule():
         tourn_day = day.get("tournDay", 0)
         feed_url = day.get("feedUrl")
         # filter early practice/qualifying days if needed
-        if not feed_url or (tourn_day is None or tourn_day < 5):
+        if not feed_url or (tourn_day is None or tourn_day < 7):
             continue
 
         day_data = fetch_json(feed_url)
