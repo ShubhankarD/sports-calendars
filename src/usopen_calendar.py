@@ -2,7 +2,6 @@ import requests
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 from ics import Calendar, Event
-from helpers_extras import add_vcalendar_extras, add_vevent_extras
 
 ET = ZoneInfo("America/New_York")
 
