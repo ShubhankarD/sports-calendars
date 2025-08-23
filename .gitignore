@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env
+*.egg-info/
+dist/
+build/
+*.log
+
+# VS Code
+.vscode/
+.venv/
+
+# OS files
+.DS_Store
+Thumbs.db   
+
+# Calendar output
+usopen_schedule.ics
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Test & coverage
+.coverage
+htmlcov/
+.cache/
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.db
+
+# Node.js (if any JS tooling is used)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-
+.ics
+.vscode/
