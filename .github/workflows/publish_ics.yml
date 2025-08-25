@@ -29,7 +29,7 @@ jobs:
           set -e
           echo "📁 CWD: $(pwd)"
           mkdir -p site
-          python src/usopen_calendar.py
+          python run_tournament.py
           # Prove it exists at the repo root first
           ls -la
           test -f usopen_schedule.ics || (echo "❌ usopen_schedule.ics not found at repo root" && exit 1)
