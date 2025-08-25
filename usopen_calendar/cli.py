@@ -1,6 +1,6 @@
 import argparse
 from .config import BASE_URL, INCLUDE_BEFORE_TOURNDAY, DEFAULT_EVENT_HOURS
-from .parsing import parse_schedule
+from .schedule_of_play import parse_schedule
 from .calendar_builder import create_calendar
 
 def main():
