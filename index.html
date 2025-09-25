@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>US Open 2025 Calendar</title>
+<h1>US Open 2025 Calendar</h1>
+<p>Subscribe with this URL:</p>
+<pre id="url"></pre>
+<script>
+  const base = location.origin + location.pathname.replace(/\/?$/, '/');
+  document.getElementById('url').textContent = base + 'usopen_schedule.ics';
+</script>
+<p>Apple Calendar users can also try the same URL with <code>webcal://</code>.</p>
