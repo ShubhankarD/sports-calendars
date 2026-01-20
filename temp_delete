@@ -1,0 +1,78 @@
+Summary of recommended changes (console app only — minimal edits, reuse existing code):
+High-level intent
+•	Remove support for --reapply-label / ReapplyLabelId.
+•	Rename UseMappedLabelReapply → Reprotect (boolean flag). Default = false.
+•	Treat destination tenant id as optional: if not provided, treat destination tenant == source tenant (minimal change: set destination key to source when empty).
+•	Workflow change per-file:
+•	If Reprotect is false (default): run ChangeProtectionAsync(...) and skip RePublishAsync(...).
+•	If Reprotect is true: run RePublishAsync(...) and skip ChangeProtectionAsync(...).
+•	Keep changes minimal and local: mainly edit CLI parsing, CliSettings, PrintUsage(), and the per-file workflow in ProcessingPipeline. Small cleanup and robustness fixes recommended.
+Files to edit and exact change suggestions (no code included)
+1.	Program.cs
+•	Remove parsing of --reapply-label/-r and remove any wiring into CliSettings.
+•	Replace parsing of --use-mapped-reapply / --mapped-reapply with the new flag name(s) such as --reprotect (allow short form -p or similar if desired). Populate a boolean Reprotect setting in CliSettings. Default remains false.
+•	Update PrintUsage() to remove --reapply-label help and show --reprotect help and examples.
+•	When creating LogDirectory and output directories keep Directory.CreateDirectory but wrap in try/catch to return a clear error and non-zero exit code (user-visible message) when directory creation fails (invalid path/permissions). This avoids unhandled exceptions during arg parsing.
+•	Minimal: leave the rest of DI registration unchanged.
+2.	src/MipBatchProcessor/Configuration/* (where CliSettings is defined)
+•	Remove the ReapplyLabelId property.
+•	Add bool Reprotect property (default false) and ensure LogDirectory, InputFolder, OutputFolder, MaxDegreeOfParallelism, ProtectionOwner remain unchanged.
+•	Keep constructor shape minimal to avoid API churn; prefer to add a single new parameter at the end with a default where the object is built in TryParseArgs(string[], out CliSettings).
+3.	ProcessingPipeline.cs:212
+•	At construction or start, coalesce destination tenant key:
+•	If ida:DestTenantId is empty, treat _destinationTenantKey as _sourceTenantKey (so mapping logic and service calls operate in same-tenant mode).
+•	Minimal approach: if _destinationTenantKey is null/empty, assign _destinationTenantKey = _sourceTenantKey; immediately in constructor after reading config.
+•	Change the per-file workflow logic (only small modification):
+•	Replace the current if (_settings.UseMappedLabelReapply) { ... RePublishAsync ... } else { ChangeProtectionAsync ... } semantics with the requested semantics using the new _settings.Reprotect flag.
+•	If Reprotect == true: call RePublishAsync(job.SourcePath, job.DestinationPath, mappedLabelId, _destinationTenantKey, _settings.ProtectionOwner, cancellationToken) and do NOT call ChangeProtectionAsync(string, string, string, CancellationToken).
+•	If Reprotect == false: call ChangeProtectionAsync(job.SourcePath, _settings.ProtectionOwner!, job.DestinationPath, cancellationToken) and do NOT call RePublishAsync(string, string, string, string, CancellationToken).
+•	Keep existing validation checks (source label missing, tenant IDs missing for mapping) but be careful: if destination tenant is empty and we defaulted it to source tenant, mapping lookups still work (no extra branching).
+•	Ensure that GetMetadataAsync(job.DestinationPath, ...) calls use the correct tenant parameter in both branches:
+•	For Reprotect == true: call GetMetadataAsync(job.DestinationPath, _destinationTenantKey, ...).
+•	For Reprotect == false: call GetMetadataAsync(job.DestinationPath, ...) (existing code used a null overload in some places — keep consistent with FileLabelService semantics).
+•	Temp-file handling:
+•	Ensure the code only calls _fileIo.FinalizeOutput(job) when the workflow actually produced the job.TempPath (or when the protection call writes destinationPath directly). If ChangeProtectionAsync(string, string, string, CancellationToken) or RePublishAsync(string, string, string, string, CancellationToken) commit to destinationPath directly, FinalizeOutput(FileJob) should not attempt to move non-existent temp file. Minimal option: call FinalizeOutput(job) only when File.Exists(job.TempPath) (or ensure ChangeProtectionAsync(string, string, string, CancellationToken) writes to temp and FinalizeOutput(FileJob) uses that temp). This is a small defensive check to avoid FileNotFoundException in FinalizeOutput(FileJob).
+•	Make sure Reprotect default is false (so existing behavior is preserved unless flag supplied).
+4.	FileLabelService.cs (brief, non-invasive notes)
+•	Observations (do not necessarily require change now, but callouts you should address or monitor):
+•	ReapplyLabelAsync(string, string, CancellationToken) currently contains commented SetLabel(...) — method appears effectively a no-op if used. Either implement SetLabel call if needed by other code or remove the unused method to avoid confusion.
+•	RePublishAsync(string, string, string, string, CancellationToken) uses destinationEngine.CreateFileHandlerAsync(sourcePath, destinationPath, false) — confirm that passing sourcePath as the first parameter (source file in the handler) is intended. Keep minimal: just validate this behaviour during testing.
+•	Ensure thrown exceptions from MIP SDK calls are handled/propagated in a way consumers (pipeline) will record failures in the run CSV.
+5.	FileIoService.cs
+•	FinalizeOutput(FileJob job) currently throws if temp does not exist. To avoid unhandled exceptions:
+•	Either ensure FinalizeOutput(FileJob) only invoked when temp exists (see ProcessingPipeline note above), or make FinalizeOutput(FileJob) check for temp existence and log + skip (preferred minimal change: keep current behavior but call only when temp is expected).
+•	EnumerateJobs(string, string) currently creates destination directories eagerly — keep this behavior but be aware it may create empty directories for skipped files when aborting; acceptable.
+6.	Program.cs & RunLogger.cs
+•	Ensure RunAsync(CancellationToken) always disposes _runLogger even on cancellation/exception:
+•	Move await _runLogger.DisposeAsync(); into a finally in RunAsync(CancellationToken) so it always executes. This guarantees CSV footer/summary is always written and file handles are closed.
+•	In Main(string[]), ensure host shutdown and disposal occurs predictably: keep host Start/Stop but ensure RunAsync(CancellationToken) exceptions lead to DisposeAsync() of run logger.
+Other robustness & cleanup suggestions (small, focused)
+•	Arg parsing: make named options parsing slightly stricter (avoid returning null silently) and return a non-zero exit code with clear console error when required paths invalid or cannot be created.
+•	Logging: avoid calling Path.GetFullPath(settings.LogDirectory) if LogDirectory could be null—(but current code sets a default; keep that).
+•	Cancellation: if consumer/producer is canceled, make sure temp files are cleaned up where possible; at minimum log leftover temp file paths so operator can clean them up post-run.
+•	Exception handling: avoid empty catch blocks — replace silent ignores with at least debug logging (where safe), or keep minimal but document where exceptions are intentionally swallowed (e.g., handler.Dispose).
+•	Tests / manual validation: after changes, run a small set of sample files with both --reprotect enabled and disabled to validate:
+•	Correct destination creation and timestamps preserved
+•	CSV logging lines for success/failure
+•	No unhandled exceptions for missing temp files
+•	Mapping lookup behavior when destination tenant omitted
+Minimal change strategy (how to implement with the fewest edits)
+•	Update CliSettings (remove field/add field). Update only the one place where CliSettings is constructed (TryParseArgs(string[], out CliSettings)).
+•	Update TryParseArgs(string[], out CliSettings) only:
+•	Remove --reapply-label parsing.
+•	Replace HasFlag(... UseMapped...) with HasFlag(... reprotect ...) and pass into CliSettings.
+•	Keep directory creation but wrap in try/catch.
+•	Update ProcessingPipeline:
+•	In constructor: coalesce _destinationTenantKey = string.IsNullOrWhiteSpace(_destinationTenantKey) ? _sourceTenantKey : _destinationTenantKey;
+•	In ProcessSingleFileAsync(FileJob, CancellationToken) change the small conditional branch around RePublishAsync(string, string, string, string, CancellationToken) vs ChangeProtectionAsync(string, string, string, CancellationToken) and adjust metadata/finalize calls as noted.
+•	Move _runLogger.DisposeAsync() into RunAsync(CancellationToken) finally block so it always runs.
+•	Leave other files intact unless testing shows ReapplyLabelAsync(string, string, CancellationToken) is actually called — then either implement or remove.
+Why these changes are minimal & safe
+•	They mostly change wiring and one per-file conditional branch — low risk for widespread regressions.
+•	Reusing ChangeProtectionAsync(string, string, string, CancellationToken) and RePublishAsync(string, string, string, string, CancellationToken) already present in FileLabelService avoids adding new logic.
+•	Default behavior remains unchanged (reprotect = false) unless user requests it, preserving current production behavior.
+Potential pitfalls to validate after changes
+•	Confirm ChangeProtectionAsync(string, string, string, CancellationToken) and RePublishAsync(string, string, string, string, CancellationToken) write to the expected paths (temp vs direct destination). If their semantics differ, adjust FinalizeOutput(FileJob) invocation accordingly.
+•	Ensure mapping is only used when both tenant keys exist; when destination key defaults to source key, mapping may be pointless but harmless.
+•	Verify RunLogger summary is written in all termination modes (normal, canceled, faulted).
+•	Verify CLI help output and exit codes for invalid paths.
