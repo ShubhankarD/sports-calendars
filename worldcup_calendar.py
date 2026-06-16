@@ -1,0 +1,221 @@
+from datetime import datetime, timedelta, timezone
+from typing import Any, Dict, Iterable, List, Optional
+
+import requests
+from ics import Calendar, Event
+from ics.contentline import ContentLine
+from ics.contentline import ContentLine as EventContentLine
+
+
+ESPN_SCOREBOARD_URL = (
+    "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/"
+    "scoreboard?limit=200&dates=20260611-20260719"
+)
+HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+DEFAULT_EVENT_HOURS = 2
+
+
+def fetch_schedule(url: str = ESPN_SCOREBOARD_URL) -> Dict[str, Any]:
+    response = requests.get(url, headers=HEADERS, timeout=20)
+    response.raise_for_status()
+    return response.json()
+
+
+def parse_matches(data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    updated_at = datetime.now(timezone.utc)
+    matches = [_parse_event(event, updated_at) for event in data.get("events", [])]
+    return sorted(matches, key=lambda match: match["start_time"])
+
+
+def create_calendar(matches: Iterable[Dict[str, Any]]) -> Calendar:
+    cal = Calendar()
+    cal.method = "PUBLISH"
+    cal.prodid = "-//Sports Calendars//FIFA World Cup 2026//EN"
+    cal.extra.append(ContentLine(name="CALSCALE", params={}, value="GREGORIAN"))
+    cal.extra.append(ContentLine(name="X-WR-CALNAME", params={}, value="FIFA World Cup 2026"))
+    cal.extra.append(
+        ContentLine(
+            name="REFRESH-INTERVAL",
+            params={"VALUE": ["DURATION"]},
+            value="PT1H",
+        )
+    )
+    cal.extra.append(ContentLine(name="X-PUBLISHED-TTL", params={}, value="PT1H"))
+
+    for match in matches:
+        event = Event()
+        event.summary = match["summary"]
+        event.begin = match["start_time"]
+        event.duration = timedelta(hours=DEFAULT_EVENT_HOURS)
+        event.location = match["location"]
+        event.description = match["description"]
+        event.transparent = True
+        event.status = "CONFIRMED"
+        event.uid = f"fifa-world-cup-2026-{match['id']}@github-pages"
+        event.extra.append(EventContentLine(name="SEQUENCE", params={}, value="1"))
+        cal.events.append(event)
+
+    return cal
+
+
+def build_calendar(url: str = ESPN_SCOREBOARD_URL) -> Calendar:
+    return create_calendar(parse_matches(fetch_schedule(url)))
+
+
+def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
+    competition = (event.get("competitions") or [{}])[0]
+    competitors = _competitors(competition.get("competitors", []))
+    home, away = _home_away(competitors)
+    start_time = _parse_datetime(event.get("date") or competition.get("date"))
+    stage = _stage_name((event.get("season") or {}).get("slug"))
+    matchup = f"{home['label']} vs {away['label']}"
+    summary = f"{matchup} · {stage}" if stage else matchup
+
+    return {
+        "id": event["id"],
+        "summary": summary,
+        "start_time": start_time,
+        "location": _venue(competition.get("venue") or {}),
+        "description": _description(updated_at),
+    }
+
+
+def _parse_datetime(value: str) -> datetime:
+    if not value:
+        raise ValueError("Event is missing a start date")
+    return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
+
+
+def _competitors(competitors: Iterable[Dict[str, Any]]) -> List[Dict[str, Optional[str]]]:
+    parsed = []
+    for item in competitors:
+        team = item.get("team") or {}
+        name = _team_name(team.get("displayName") or team.get("name") or "TBD")
+        parsed.append(
+            {
+                "name": name,
+                "label": _team_label(name, team.get("abbreviation")),
+                "score": item.get("score"),
+                "home_away": item.get("homeAway"),
+                "order": item.get("order", 99),
+            }
+        )
+    return parsed
+
+
+def _home_away(competitors: List[Dict[str, Optional[str]]]) -> tuple:
+    home = next((team for team in competitors if team.get("home_away") == "home"), None)
+    away = next((team for team in competitors if team.get("home_away") == "away"), None)
+    if home and away:
+        return home, away
+
+    ordered = sorted(competitors, key=lambda team: team.get("order") or 99)
+    while len(ordered) < 2:
+        ordered.append(
+            {
+                "name": "TBD",
+                "label": "TBD",
+                "score": None,
+                "home_away": None,
+                "order": 99,
+            }
+        )
+    return ordered[0], ordered[1]
+
+
+def _venue(venue: Dict[str, Any]) -> str:
+    name = venue.get("fullName")
+    address = venue.get("address") or {}
+    city = address.get("city")
+    return ", ".join(part for part in [name, city] if part)
+
+
+def _team_name(name: str) -> str:
+    names = {
+        "United States": "USA",
+    }
+    return names.get(name, name)
+
+
+def _team_label(name: str, abbreviation: Optional[str]) -> str:
+    flag = _flag(abbreviation)
+    return f"{flag} {name}" if flag else name
+
+
+def _flag(abbreviation: Optional[str]) -> Optional[str]:
+    flags = {
+        "ALG": "🇩🇿",
+        "ARG": "🇦🇷",
+        "AUS": "🇦🇺",
+        "AUT": "🇦🇹",
+        "BEL": "🇧🇪",
+        "BIH": "🇧🇦",
+        "BRA": "🇧🇷",
+        "CAN": "🇨🇦",
+        "CPV": "🇨🇻",
+        "COD": "🇨🇩",
+        "COL": "🇨🇴",
+        "CRO": "🇭🇷",
+        "CUW": "🇨🇼",
+        "CZE": "🇨🇿",
+        "ECU": "🇪🇨",
+        "EGY": "🇪🇬",
+        "ENG": "🏴",
+        "FRA": "🇫🇷",
+        "GER": "🇩🇪",
+        "GHA": "🇬🇭",
+        "HAI": "🇭🇹",
+        "IRN": "🇮🇷",
+        "IRQ": "🇮🇶",
+        "CIV": "🇨🇮",
+        "JPN": "🇯🇵",
+        "JOR": "🇯🇴",
+        "KOR": "🇰🇷",
+        "MEX": "🇲🇽",
+        "MAR": "🇲🇦",
+        "NED": "🇳🇱",
+        "NZL": "🇳🇿",
+        "NOR": "🇳🇴",
+        "PAN": "🇵🇦",
+        "PAR": "🇵🇾",
+        "POR": "🇵🇹",
+        "QAT": "🇶🇦",
+        "KSA": "🇸🇦",
+        "SCO": "🏴",
+        "SEN": "🇸🇳",
+        "RSA": "🇿🇦",
+        "ESP": "🇪🇸",
+        "SWE": "🇸🇪",
+        "SUI": "🇨🇭",
+        "TUN": "🇹🇳",
+        "TUR": "🇹🇷",
+        "USA": "🇺🇸",
+        "URU": "🇺🇾",
+        "UZB": "🇺🇿",
+    }
+    return flags.get(abbreviation or "")
+
+
+def _stage_name(slug: Optional[str]) -> Optional[str]:
+    names = {
+        "group-stage": "Group Stage",
+        "round-of-32": "Round of 32",
+        "round-of-16": "Round of 16",
+        "quarterfinals": "Quarterfinals",
+        "semifinals": "Semifinals",
+        "3rd-place-match": None,
+        "final": "Final",
+    }
+    if not slug:
+        return None
+    return names.get(slug, slug.replace("-", " ").title())
+
+
+def _description(updated_at: datetime) -> str:
+    timestamp = _sync2cal_timestamp(updated_at)
+    return f"Last updated: {timestamp}"
+
+
+def _sync2cal_timestamp(value: datetime) -> str:
+    value = value.astimezone(timezone.utc)
+    return f"{value.strftime('%b')} {value.day}, {value.year} at {value:%H:%M} UTC"
