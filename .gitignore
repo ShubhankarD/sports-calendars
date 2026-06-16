@@ -20,6 +20,7 @@ Thumbs.db
 
 # Calendar output
 usopen_schedule.ics
+worldcup_schedule.ics
 
 # Jupyter Notebooks
 .ipynb_checkpoints/

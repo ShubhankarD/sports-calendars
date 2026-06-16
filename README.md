@@ -1,22 +1,27 @@
-# US Open 2025 Subscribeable Calendar (GitHub Pages)
+# Sports Subscribeable Calendars (GitHub Pages)
 
-This repo builds an `.ics` feed hourly and publishes it to GitHub Pages.
+This repo builds `.ics` feeds hourly and publishes them to GitHub Pages.
 
 ## Subscribe URL
 
-After enabling Pages (see below), your URL will be:
+After enabling Pages (see below), your URLs will be:
 
 https://ShubhankarD.github.io/sports-calendars/usopen_schedule.ics
+
+https://ShubhankarD.github.io/sports-calendars/worldcup_schedule.ics
 
 Apple Calendar users can also try:
 
 webcal://ShubhakarD.github.io/sports-calendars/usopen_schedule.ics
 
+webcal://ShubhankarD.github.io/sports-calendars/worldcup_schedule.ics
+
 ## How it works
 
-- `src/usopen_calenda.py` fetches US Open feeds and writes `usopen_schedule.ics`.
-- A GitHub Action runs hourly and pushes the file to the `gh-pages` branch.
-- GitHub Pages serves the file at a stable URL that calendar apps can poll.
+- `run_tournament.py` fetches US Open feeds and writes `usopen_schedule.ics`.
+- `run_worldcup.py` fetches the FIFA World Cup 2026 schedule and writes `worldcup_schedule.ics`.
+- A GitHub Action runs hourly and pushes the files to the `gh-pages` branch.
+- GitHub Pages serves the files at stable URLs that calendar apps can poll.
 
 ## Setup
 
