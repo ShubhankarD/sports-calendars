@@ -13,6 +13,7 @@ ESPN_SCOREBOARD_URL = (
 )
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 DEFAULT_EVENT_HOURS = 2
+SHOW_SCORE_AFTER = timedelta(days=1)
 
 
 def fetch_schedule(url: str = ESPN_SCOREBOARD_URL) -> Dict[str, Any]:
@@ -68,7 +69,8 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
     home, away = _home_away(competitors)
     start_time = _parse_datetime(event.get("date") or competition.get("date"))
     stage = _stage_name((event.get("season") or {}).get("slug"))
-    matchup = f"{home['label']} vs {away['label']}"
+    status = (competition.get("status") or {}).get("type") or {}
+    matchup = _matchup_summary(home, away, status, start_time, updated_at)
     summary = f"{matchup} · {stage}" if stage else matchup
 
     return {
@@ -121,6 +123,32 @@ def _home_away(competitors: List[Dict[str, Optional[str]]]) -> tuple:
             }
         )
     return ordered[0], ordered[1]
+
+
+def _matchup_summary(
+    home: Dict[str, Optional[str]],
+    away: Dict[str, Optional[str]],
+    status: Dict[str, Any],
+    start_time: datetime,
+    updated_at: datetime,
+) -> str:
+    if _should_show_score(home, away, status, start_time, updated_at):
+        return f"{home['label']} {home['score']}-{away['score']} {away['label']}"
+    return f"{home['label']} vs {away['label']}"
+
+
+def _should_show_score(
+    home: Dict[str, Optional[str]],
+    away: Dict[str, Optional[str]],
+    status: Dict[str, Any],
+    start_time: datetime,
+    updated_at: datetime,
+) -> bool:
+    if not status.get("completed"):
+        return False
+    if home.get("score") is None or away.get("score") is None:
+        return False
+    return updated_at - start_time >= SHOW_SCORE_AFTER
 
 
 def _venue(venue: Dict[str, Any]) -> str:
