@@ -49,7 +49,7 @@ jobs:
           <h1>Sports Calendars</h1>
           <p>Subscribe with these URLs:</p>
           <ul>
-            <li>US Open 2025: <code id="usopen-url"></code></li>
+            <li>US Open 2026: <code id="usopen-url"></code></li>
             <li>FIFA World Cup 2026: <code id="worldcup-url"></code></li>
           </ul>
           <script>
