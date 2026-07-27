@@ -1,4 +1,4 @@
-from usopen_calendar.tournament_v1 import parse_schedule
+from usopen_calendar.tournament import parse_schedule
 from usopen_calendar.calendar_builder import create_calendar
 
 if __name__ == "__main__":

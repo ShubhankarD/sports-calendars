@@ -34,7 +34,12 @@ def parse_schedule(
       - Body: numbered list of "<flag+name> vs <flag+name>" lines, each ending with two spaces for Markdown.
     """
     # Load the day list for the requested base_url (no side-effects at import)
-    schedule_data = fetch_json(base_url)
+    # The scores feed is not published for every tournament year. Fall back to
+    # the tournament schedule feed when the year-specific endpoint is absent.
+    try:
+        schedule_data = fetch_json(base_url)
+    except Exception:
+        schedule_data = {}
     event_days = schedule_data.get("eventDays", [])
 
     # Lazy-load tournament schedule (honors function param)
@@ -46,6 +51,16 @@ def parse_schedule(
             _TOURN_CACHE = {}
 
     raw_items: List[Dict[str, Optional[object]]] = []
+
+    if not event_days:
+        draws = (_TOURN_CACHE or {}).get("tournament_schedule", {}).get("draws", {})
+        tourn_days = {
+            d.get("tournDay")
+            for draw in (draws or {}).values()
+            for d in draw.get("dates", []) or []
+            if d.get("tournDay") is not None and d.get("tournDay") >= min_tourn_day
+        }
+        event_days = [{"tournDay": tourn_day, "feedUrl": None} for tourn_day in sorted(tourn_days)]
 
     for day in event_days:
         tourn_day = day.get("tournDay", 0)
