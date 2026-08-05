@@ -30,15 +30,12 @@ jobs:
           echo "📁 CWD: $(pwd)"
           mkdir -p site
           python run_tournament.py
-          python run_worldcup.py
           # Prove it exists at the repo root first
           ls -la
           test -f usopen_schedule.ics || (echo "❌ usopen_schedule.ics not found at repo root" && exit 1)
-          test -f worldcup_schedule.ics || (echo "❌ worldcup_schedule.ics not found at repo root" && exit 1)
 
           # Move to publish dir
           mv usopen_schedule.ics site/
-          mv worldcup_schedule.ics site/
           echo > site/.nojekyll
 
           # Minimal index for sanity check
@@ -50,12 +47,10 @@ jobs:
           <p>Subscribe with these URLs:</p>
           <ul>
             <li>US Open 2026: <code id="usopen-url"></code></li>
-            <li>FIFA World Cup 2026: <code id="worldcup-url"></code></li>
           </ul>
           <script>
             const base = location.origin + location.pathname.replace(/\/?$/, '/');
             document.getElementById('usopen-url').textContent = base + 'usopen_schedule.ics';
-            document.getElementById('worldcup-url').textContent = base + 'worldcup_schedule.ics';
           </script>
           <p>Apple Calendar users can also try the same URLs with <code>webcal://</code>.</p>
           EOF
