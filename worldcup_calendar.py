@@ -11,7 +11,19 @@ ESPN_SCOREBOARD_URL = (
     "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/"
     "scoreboard?limit=200&dates=20260611-20260719"
 )
-HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+# ESPN intermittently rejects GitHub Actions runner IPs at site.api.  The
+# fittwo endpoint serves the same scoreboard payload and is our fallback.
+ESPN_SCOREBOARD_FALLBACK_URL = (
+    "https://site.web.api.espn.com/apis/fittwo/v3/sports/soccer/fifa.world/"
+    "scoreboard?limit=200&dates=20260611-20260719"
+)
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/131.0 Safari/537.36",
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://www.espn.com/",
+}
 DEFAULT_EVENT_HOURS = 2
 SHOW_SCORE_AFTER = timedelta(days=1)
 
