@@ -29,9 +29,21 @@ SHOW_SCORE_AFTER = timedelta(days=1)
 
 
 def fetch_schedule(url: str = ESPN_SCOREBOARD_URL) -> Dict[str, Any]:
-    response = requests.get(url, headers=HEADERS, timeout=20)
-    response.raise_for_status()
-    return response.json()
+    """Fetch the ESPN scoreboard, falling back when site.api blocks a runner."""
+    urls = [url]
+    if url == ESPN_SCOREBOARD_URL:
+        urls.append(ESPN_SCOREBOARD_FALLBACK_URL)
+
+    errors = []
+    for candidate_url in urls:
+        try:
+            response = requests.get(candidate_url, headers=HEADERS, timeout=20)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as error:
+            errors.append(f"{candidate_url}: {error}")
+
+    raise RuntimeError("Unable to fetch ESPN World Cup schedule. " + " | ".join(errors))
 
 
 def parse_matches(data: Dict[str, Any]) -> List[Dict[str, Any]]:
