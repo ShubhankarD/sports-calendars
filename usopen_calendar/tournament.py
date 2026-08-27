@@ -72,7 +72,7 @@ def parse_schedule(
 
         # If no feed URL, synthesize placeholders from the tournament schedule
         if not feed_url:
-            raw_items.extend(_build_placeholders_for_tourn_day(_TOURN_CACHE, tourn_day))
+            raw_items.extend(_build_placeholders_for_tourn_day(_TOURN_CACHE, day))
             continue
 
         # Normal day with a feed
@@ -250,21 +250,54 @@ def _fmt_weekday_month_day(date_str: str) -> Optional[str]:
         return None
 
 
+def _parse_month_day_from_msg(msg: str) -> Optional[Tuple[str, int]]:
+    """Parse 'Day 1: Sunday, August 30' -> ('August', 30)."""
+    if not msg:
+        return None
+    parts = msg.split(":")
+    target = parts[-1].strip()  # 'Sunday, August 30' or 'Tuesday, September 1'
+    if "," in target:
+        target = target.split(",")[-1].strip()  # 'August 30' or 'September 1'
+    subparts = target.split()
+    if len(subparts) >= 2:
+        month = subparts[0]  # 'August' or 'September'
+        try:
+            day = int(subparts[1])
+            return (month, day)
+        except ValueError:
+            pass
+    return None
+
+
+def _parse_month_day_from_iso(date_str: str) -> Optional[Tuple[str, int]]:
+    """Parse '2026-08-30' -> ('August', 30)."""
+    try:
+        dt = datetime.strptime(date_str, "%Y-%m-%d")
+        return (dt.strftime("%B"), dt.day)
+    except Exception:
+        return None
+
+
 def _build_placeholders_for_tourn_day(
-    schedule_json: dict, tourn_day_target: int
+    schedule_json: dict, day_dict: dict
 ) -> List[Dict[str, Optional[object]]]:
     """
-    Build placeholder raw_items for a given tournDay using the tournament schedule JSON.
+    Build placeholder raw_items for a given day using the tournament schedule JSON.
     Each 'events' entry becomes a placeholder match with TBD players.
     """
     raw_items: List[Dict[str, Optional[object]]] = []
+    tourn_day_target = day_dict.get("tournDay", 0)
+    msg = day_dict.get("message", "")
+    target_md = _parse_month_day_from_msg(msg)
+
     draws = (schedule_json or {}).get("tournament_schedule", {}).get("draws", {})
     for _, draw in (draws or {}).items():
         for d in draw.get("dates", []) or []:
-            if d.get("tournDay") != tourn_day_target:
+            date_iso = d.get("date")
+            d_md = _parse_month_day_from_iso(date_iso) if date_iso else None
+            if not target_md or not d_md or target_md != d_md:
                 continue
 
-            date_iso = d.get("date")  # "2025-08-19"
             display_date = _fmt_weekday_month_day(date_iso) or date_iso
             # Prefer the day's epoch if provided
             day_epoch = d.get("epoch")
@@ -321,3 +354,4 @@ def _nz(s: Optional[object]) -> Optional[str]:
         return None
     s = str(s).strip()
     return s if s else None
+
