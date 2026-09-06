@@ -92,6 +92,6 @@ def team_flags(team: Optional[list]) -> str:
     return "/".join(_flag_emoji(c) for c in isos[:2])
 
 def team_label(team: Optional[list]) -> str:
-    """Compose '<flags> NameA & NameB' using the existing _join_names()."""
+    """Compose plain text 'NameA & NameB' using _join_names()."""
     names = _join_names(team)
-    return f"{team_flags(team)} {names}".strip()
+    return names.strip() if names else "TBD"
