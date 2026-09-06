@@ -35,68 +35,6 @@ KNOCKOUT_STAGES = {
     "final",
 }
 
-TOP_CLUBS = {
-    "real madrid",
-    "barcelona",
-    "bayern munich",
-    "manchester city",
-    "arsenal",
-    "liverpool",
-    "paris saint-germain",
-    "psg",
-    "internazionale",
-    "inter milan",
-    "juventus",
-    "borussia dortmund",
-    "atlético madrid",
-    "atletico madrid",
-    "chelsea",
-    "manchester united",
-    "ac milan",
-    "bayer leverkusen",
-    "aston villa",
-    "napoli",
-}
-
-CLUB_EMOJIS = {
-    "AEK": "🟡⚫",     # AEK Athens (Yellow & Black)
-    "ARS": "🔴⚪",     # Arsenal (Red & White)
-    "ATM": "🔴⚪",     # Atlético Madrid (Red & White)
-    "AVL": "🟣🩵",     # Aston Villa (Claret & Blue)
-    "BAR": "🔵🔴",     # Barcelona (Blaugrana)
-    "BET": "🟢⚪",     # Real Betis (Green & White)
-    "BODO": "🟡⚫",    # Bodo/Glimt (Yellow)
-    "BRU": "🔵⚫",     # Club Brugge (Blue & Black)
-    "COMO": "🔵⚪",    # Como (Blue & White)
-    "DOR": "🟡⚫",     # Borussia Dortmund (Yellow & Black)
-    "FCP": "🔵⚪",     # FC Porto (Blue & White)
-    "FEN": "🟡🔵",     # Fenerbahce (Yellow & Navy Blue)
-    "FEY": "🔴⚪",     # Feyenoord Rotterdam (Red & White)
-    "GAL": "🟡🔴",     # Galatasaray (Yellow & Red)
-    "INT": "🔵⚫",     # Internazionale (Nerazzurri)
-    "LAS": "⬛⚪",     # LASK Linz (Black & White)
-    "LILL": "🔴🔵",    # Lille (Red & Blue)
-    "LIV": "🔴",       # Liverpool (Reds)
-    "MAN": "🔴",       # Manchester United (Red Devils)
-    "MNC": "🩵",       # Manchester City (Sky Blue)
-    "MUN": "🔴⚪",     # Bayern Munich (Red & White)
-    "NAP": "🩵",       # Napoli (Partenopei Sky Blue)
-    "PSG": "🔵🔴",     # Paris Saint-Germain (Blue & Red)
-    "PSV": "🔴⚪",     # PSV Eindhoven (Red & White)
-    "RBL": "🔴⚪",     # RB Leipzig (Red & White)
-    "RCL": "🔴🟡",     # Lens (Red & Yellow)
-    "RMA": "⚪👑",     # Real Madrid (Los Blancos)
-    "ROMA": "🟡🔴",    # AS Roma (Giallorossi)
-    "SAB": "🔵⚪",     # Sabah FK (Blue & White)
-    "SCP": "🟢⚪",     # Sporting CP (Green & White)
-    "SHK": "🟧⬛",     # Shakhtar Donetsk (Orange & Black)
-    "SLB": "🔴⚪",     # Slovan Bratislava (Sky Blue/White)
-    "SLP": "🔴⚪",     # Slavia Prague (Red & White)
-    "VFB": "⚪🔴",     # VfB Stuttgart (White & Red)
-    "VIK": "🔵⚪",     # Viking FK (Dark Blue)
-    "VIL": "🟡",       # Villarreal (Yellow Submarine)
-}
-
 
 def fetch_schedule(url: Optional[str] = None) -> Dict[str, Any]:
     """Fetch the ESPN UCL scoreboard header payload for the current season, falling back if needed."""
@@ -157,18 +95,13 @@ def parse_matches(data: Dict[str, Any], group_before_knockouts: bool = True) -> 
             final_matches.append(items[0])
             continue
 
-        # Sort items so matches featuring top clubs appear first
-        items.sort(key=lambda i: (0 if i["is_featured"] else 1, i["matchup"]))
+        items.sort(key=lambda i: i["matchup"])
 
         courts = {i["location"] for i in items if i.get("location")}
         location = next(iter(courts)) if len(courts) == 1 else "Multiple Venues"
 
         header = f"UEFA Champions League | {stage}"
-        plain_lines = []
-
-        for idx, i in enumerate(items, start=1):
-            prefix = "⭐ " if i["is_featured"] else ""
-            plain_lines.append(f"{prefix}{idx}. {i['matchup']}  ")
+        plain_lines = [f"{idx}. {i['matchup']}  " for idx, i in enumerate(items, start=1)]
 
         plain_body = "\n".join(plain_lines)
         description = f"{header}\n{plain_body}\n\n{_description(updated_at)}"
@@ -180,7 +113,7 @@ def parse_matches(data: Dict[str, Any], group_before_knockouts: bool = True) -> 
         final_matches.append(
             {
                 "id": group_id,
-                "summary": f"⚽ UEFA Champions League - {stage}",
+                "summary": f"UEFA Champions League - {stage}",
                 "start_time": start_time,
                 "location": location,
                 "description": description,
@@ -233,17 +166,6 @@ def _is_knockout_stage(stage: Optional[str]) -> bool:
     return any(k in stage_lower for k in KNOCKOUT_STAGES)
 
 
-def _is_top_club(name: Optional[str]) -> bool:
-    if not name:
-        return False
-    return name.strip().lower() in TOP_CLUBS
-
-
-def _team_label(name: str, abbreviation: Optional[str]) -> str:
-    emoji = CLUB_EMOJIS.get(abbreviation or "")
-    return f"{emoji} {name}" if emoji else name
-
-
 def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
     competition = (event.get("competitions") or [{}])[0]
     raw_competitors = event.get("competitors") or competition.get("competitors") or []
@@ -257,10 +179,8 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
     else:
         status_type = status if isinstance(status, dict) else {}
 
-    is_featured = _is_top_club(home.get("name")) or _is_top_club(away.get("name"))
     matchup = _matchup_summary(home, away, status_type, start_time, updated_at)
-    prefix = "⭐ " if is_featured else ""
-    summary = f"⚽ {prefix}{matchup} · {stage}" if stage else f"⚽ {prefix}{matchup}"
+    summary = f"{matchup} · {stage}" if stage else matchup
 
     return {
         "id": event["id"],
@@ -270,7 +190,6 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
         "location": event.get("location") or _venue(competition.get("venue") or {}),
         "description": _description(updated_at),
         "stage": stage,
-        "is_featured": is_featured,
         "home_name": home.get("name"),
         "away_name": away.get("name"),
     }
@@ -287,12 +206,10 @@ def _competitors(competitors: Iterable[Dict[str, Any]]) -> List[Dict[str, Option
     for item in competitors:
         team = item.get("team") if isinstance(item.get("team"), dict) else item
         name = team.get("displayName") or team.get("name") or "TBD"
-        abbr = team.get("abbreviation") if isinstance(team, dict) else None
-        label = _team_label(name, abbr)
         parsed.append(
             {
                 "name": name,
-                "label": label,
+                "label": name,
                 "score": item.get("score"),
                 "home_away": item.get("homeAway"),
                 "order": item.get("order", 99),
