@@ -35,6 +35,29 @@ KNOCKOUT_STAGES = {
     "final",
 }
 
+TOP_CLUBS = {
+    "real madrid",
+    "barcelona",
+    "bayern munich",
+    "manchester city",
+    "arsenal",
+    "liverpool",
+    "paris saint-germain",
+    "psg",
+    "internazionale",
+    "inter milan",
+    "juventus",
+    "borussia dortmund",
+    "atlético madrid",
+    "atletico madrid",
+    "chelsea",
+    "manchester united",
+    "ac milan",
+    "bayer leverkusen",
+    "aston villa",
+    "napoli",
+}
+
 
 def fetch_schedule(url: Optional[str] = None) -> Dict[str, Any]:
     """Fetch the ESPN UCL scoreboard header payload for the current season, falling back if needed."""
@@ -95,13 +118,18 @@ def parse_matches(data: Dict[str, Any], group_before_knockouts: bool = True) -> 
             final_matches.append(items[0])
             continue
 
-        items.sort(key=lambda i: i["matchup"])
+        # Sort items so matches featuring top clubs appear first
+        items.sort(key=lambda i: (0 if i["is_featured"] else 1, i["matchup"]))
 
         courts = {i["location"] for i in items if i.get("location")}
         location = next(iter(courts)) if len(courts) == 1 else "Multiple Venues"
 
         header = f"UEFA Champions League | {stage}"
-        plain_lines = [f"{idx}. {i['matchup']}  " for idx, i in enumerate(items, start=1)]
+        plain_lines = []
+
+        for idx, i in enumerate(items, start=1):
+            matchup_text = f"**{i['matchup']}**" if i["is_featured"] else i["matchup"]
+            plain_lines.append(f"{idx}. {matchup_text}  ")
 
         plain_body = "\n".join(plain_lines)
         description = f"{header}\n{plain_body}\n\n{_description(updated_at)}"
@@ -166,6 +194,12 @@ def _is_knockout_stage(stage: Optional[str]) -> bool:
     return any(k in stage_lower for k in KNOCKOUT_STAGES)
 
 
+def _is_top_club(name: Optional[str]) -> bool:
+    if not name:
+        return False
+    return name.strip().lower() in TOP_CLUBS
+
+
 def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
     competition = (event.get("competitions") or [{}])[0]
     raw_competitors = event.get("competitors") or competition.get("competitors") or []
@@ -179,6 +213,7 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
     else:
         status_type = status if isinstance(status, dict) else {}
 
+    is_featured = _is_top_club(home.get("name")) or _is_top_club(away.get("name"))
     matchup = _matchup_summary(home, away, status_type, start_time, updated_at)
     summary = f"{matchup} · {stage}" if stage else matchup
 
@@ -190,6 +225,7 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
         "location": event.get("location") or _venue(competition.get("venue") or {}),
         "description": _description(updated_at),
         "stage": stage,
+        "is_featured": is_featured,
         "home_name": home.get("name"),
         "away_name": away.get("name"),
     }
