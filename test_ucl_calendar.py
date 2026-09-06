@@ -11,7 +11,7 @@ from ucl_calendar import (
 )
 
 
-def test_parse_matches_grouped_with_highlights_and_logos():
+def test_parse_matches_grouped_with_club_emojis():
     mock_data = {
         "sports": [
             {
@@ -25,8 +25,8 @@ def test_parse_matches_grouped_with_highlights_and_logos():
                                 "location": "Stadium A",
                                 "group": {"name": "League Phase"},
                                 "competitors": [
-                                    {"displayName": "LASK Linz", "homeAway": "home", "order": 1, "logo": "http://logo.com/lask.png"},
-                                    {"displayName": "AEK Athens", "homeAway": "away", "order": 2, "logo": "http://logo.com/aek.png"},
+                                    {"displayName": "LASK Linz", "abbreviation": "LAS", "homeAway": "home", "order": 1},
+                                    {"displayName": "AEK Athens", "abbreviation": "AEK", "homeAway": "away", "order": 2},
                                 ],
                             },
                             {
@@ -36,8 +36,8 @@ def test_parse_matches_grouped_with_highlights_and_logos():
                                 "location": "Stadium B",
                                 "group": {"name": "League Phase"},
                                 "competitors": [
-                                    {"displayName": "Real Madrid", "homeAway": "home", "order": 1, "logo": "http://logo.com/real.png"},
-                                    {"displayName": "Arsenal", "homeAway": "away", "order": 2, "logo": "http://logo.com/arsenal.png"},
+                                    {"displayName": "Real Madrid", "abbreviation": "RMA", "homeAway": "home", "order": 1},
+                                    {"displayName": "Arsenal", "abbreviation": "ARS", "homeAway": "away", "order": 2},
                                 ],
                             },
                         ]
@@ -51,12 +51,8 @@ def test_parse_matches_grouped_with_highlights_and_logos():
     assert len(matches) == 1
     m = matches[0]
     assert m["summary"] == "⚽ UEFA Champions League - League Phase"
-    assert "⭐ 1. Real Madrid vs Arsenal" in m["description"]
-    assert "2. LASK Linz vs AEK Athens" in m["description"]
-    assert 'X-ALT-DESC;FMTTYPE=text/html' not in m["description"]
-    assert m.get("html_description") is not None
-    assert 'img src="http://logo.com/real.png"' in m["html_description"]
-    assert 'img src="http://logo.com/arsenal.png"' in m["html_description"]
+    assert "⭐ 1. ⚪👑 Real Madrid vs 🔴⚪ Arsenal" in m["description"]
+    assert "2. ⬛⚪ LASK Linz vs 🟡⚫ AEK Athens" in m["description"]
 
 
 def test_parse_matches_knockout_individual():
@@ -73,8 +69,8 @@ def test_parse_matches_knockout_individual():
                                 "location": "Allianz Arena",
                                 "group": {"name": "Round of 16"},
                                 "competitors": [
-                                    {"displayName": "Bayern Munich", "homeAway": "home", "order": 1},
-                                    {"displayName": "Arsenal", "homeAway": "away", "order": 2},
+                                    {"displayName": "Bayern Munich", "abbreviation": "MUN", "homeAway": "home", "order": 1},
+                                    {"displayName": "Arsenal", "abbreviation": "ARS", "homeAway": "away", "order": 2},
                                 ],
                             },
                         ]
@@ -87,7 +83,7 @@ def test_parse_matches_knockout_individual():
     matches = parse_matches(mock_data, group_before_knockouts=True)
     assert len(matches) == 1
     assert "⭐" in matches[0]["summary"]
-    assert "Bayern Munich vs Arsenal" in matches[0]["summary"]
+    assert "🔴⚪ Bayern Munich vs 🔴⚪ Arsenal" in matches[0]["summary"]
 
 
 def test_create_calendar():
@@ -97,8 +93,7 @@ def test_create_calendar():
             "summary": "⚽ UEFA Champions League - League Phase",
             "start_time": datetime(2026, 9, 8, 16, 45, tzinfo=timezone.utc),
             "location": "Multiple Venues",
-            "description": "UEFA Champions League | League Phase\n⭐ 1. Real Madrid vs Arsenal\n2. LASK Linz vs AEK Athens",
-            "html_description": "<html><body><ol><li>Real Madrid vs Arsenal</li></ol></body></html>",
+            "description": "UEFA Champions League | League Phase\n⭐ 1. ⚪👑 Real Madrid vs 🔴⚪ Arsenal\n2. ⬛⚪ LASK Linz vs 🟡⚫ AEK Athens",
         }
     ]
 
@@ -108,12 +103,11 @@ def test_create_calendar():
     assert event.summary == "⚽ UEFA Champions League - League Phase"
     assert event.uid == "ucl-101@github-pages"
     assert event.location == "Multiple Venues"
-    assert any("X-ALT-DESC" in line.name for line in event.extra)
 
 
 def test_should_show_score():
-    home = {"label": "Real Madrid", "score": "2"}
-    away = {"label": "Barcelona", "score": "1"}
+    home = {"label": "⚪👑 Real Madrid", "score": "2"}
+    away = {"label": "🔵🔴 Barcelona", "score": "1"}
     status = {"completed": True}
     start_time = datetime(2026, 10, 20, 19, 0, tzinfo=timezone.utc)
     updated_at = datetime(2026, 10, 22, 19, 0, tzinfo=timezone.utc)  # 2 days later

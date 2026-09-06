@@ -58,6 +58,45 @@ TOP_CLUBS = {
     "napoli",
 }
 
+CLUB_EMOJIS = {
+    "AEK": "🟡⚫",     # AEK Athens (Yellow & Black)
+    "ARS": "🔴⚪",     # Arsenal (Red & White)
+    "ATM": "🔴⚪",     # Atlético Madrid (Red & White)
+    "AVL": "🟣🩵",     # Aston Villa (Claret & Blue)
+    "BAR": "🔵🔴",     # Barcelona (Blaugrana)
+    "BET": "🟢⚪",     # Real Betis (Green & White)
+    "BODO": "🟡⚫",    # Bodo/Glimt (Yellow)
+    "BRU": "🔵⚫",     # Club Brugge (Blue & Black)
+    "COMO": "🔵⚪",    # Como (Blue & White)
+    "DOR": "🟡⚫",     # Borussia Dortmund (Yellow & Black)
+    "FCP": "🔵⚪",     # FC Porto (Blue & White)
+    "FEN": "🟡🔵",     # Fenerbahce (Yellow & Navy Blue)
+    "FEY": "🔴⚪",     # Feyenoord Rotterdam (Red & White)
+    "GAL": "🟡🔴",     # Galatasaray (Yellow & Red)
+    "INT": "🔵⚫",     # Internazionale (Nerazzurri)
+    "LAS": "⬛⚪",     # LASK Linz (Black & White)
+    "LILL": "🔴🔵",    # Lille (Red & Blue)
+    "LIV": "🔴",       # Liverpool (Reds)
+    "MAN": "🔴",       # Manchester United (Red Devils)
+    "MNC": "🩵",       # Manchester City (Sky Blue)
+    "MUN": "🔴⚪",     # Bayern Munich (Red & White)
+    "NAP": "🩵",       # Napoli (Partenopei Sky Blue)
+    "PSG": "🔵🔴",     # Paris Saint-Germain (Blue & Red)
+    "PSV": "🔴⚪",     # PSV Eindhoven (Red & White)
+    "RBL": "🔴⚪",     # RB Leipzig (Red & White)
+    "RCL": "🔴🟡",     # Lens (Red & Yellow)
+    "RMA": "⚪👑",     # Real Madrid (Los Blancos)
+    "ROMA": "🟡🔴",    # AS Roma (Giallorossi)
+    "SAB": "🔵⚪",     # Sabah FK (Blue & White)
+    "SCP": "🟢⚪",     # Sporting CP (Green & White)
+    "SHK": "🟧⬛",     # Shakhtar Donetsk (Orange & Black)
+    "SLB": "🔴⚪",     # Slovan Bratislava (Sky Blue/White)
+    "SLP": "🔴⚪",     # Slavia Prague (Red & White)
+    "VFB": "⚪🔴",     # VfB Stuttgart (White & Red)
+    "VIK": "🔵⚪",     # Viking FK (Dark Blue)
+    "VIL": "🟡",       # Villarreal (Yellow Submarine)
+}
+
 
 def fetch_schedule(url: Optional[str] = None) -> Dict[str, Any]:
     """Fetch the ESPN UCL scoreboard header payload for the current season, falling back if needed."""
@@ -126,32 +165,13 @@ def parse_matches(data: Dict[str, Any], group_before_knockouts: bool = True) -> 
 
         header = f"UEFA Champions League | {stage}"
         plain_lines = []
-        html_lines = []
 
         for idx, i in enumerate(items, start=1):
             prefix = "⭐ " if i["is_featured"] else ""
             plain_lines.append(f"{prefix}{idx}. {i['matchup']}  ")
 
-            # Rich HTML line with team logos
-            home_logo_html = f'<img src="{i["home_logo"]}" height="16" width="16" /> ' if i.get("home_logo") else ""
-            away_logo_html = f' <img src="{i["away_logo"]}" height="16" width="16" />' if i.get("away_logo") else ""
-            match_str = f"{home_logo_html}{i['matchup']}{away_logo_html}"
-            if i["is_featured"]:
-                html_lines.append(f"<li><b>⭐ {match_str}</b></li>")
-            else:
-                html_lines.append(f"<li>{match_str}</li>")
-
         plain_body = "\n".join(plain_lines)
         description = f"{header}\n{plain_body}\n\n{_description(updated_at)}"
-
-        html_body = "".join(html_lines)
-        html_description = (
-            f"<html><body>"
-            f"<h3>{header}</h3>"
-            f"<ol>{html_body}</ol>"
-            f"<p><small>{_description(updated_at)}</small></p>"
-            f"</body></html>"
-        )
 
         # Stable group ID
         item_ids = "-".join(sorted(str(i["id"]) for i in items))
@@ -164,7 +184,6 @@ def parse_matches(data: Dict[str, Any], group_before_knockouts: bool = True) -> 
                 "start_time": start_time,
                 "location": location,
                 "description": description,
-                "html_description": html_description,
                 "stage": stage,
             }
         )
@@ -194,14 +213,6 @@ def create_calendar(matches: Iterable[Dict[str, Any]]) -> Calendar:
         event.duration = timedelta(hours=DEFAULT_EVENT_HOURS)
         event.location = match["location"]
         event.description = match["description"]
-        if match.get("html_description"):
-            event.extra.append(
-                EventContentLine(
-                    name="X-ALT-DESC",
-                    params={"FMTTYPE": ["text/html"]},
-                    value=match["html_description"],
-                )
-            )
         event.transparent = True
         event.status = "CONFIRMED"
         event.uid = f"ucl-{match['id']}@github-pages"
@@ -228,6 +239,11 @@ def _is_top_club(name: Optional[str]) -> bool:
     return name.strip().lower() in TOP_CLUBS
 
 
+def _team_label(name: str, abbreviation: Optional[str]) -> str:
+    emoji = CLUB_EMOJIS.get(abbreviation or "")
+    return f"{emoji} {name}" if emoji else name
+
+
 def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
     competition = (event.get("competitions") or [{}])[0]
     raw_competitors = event.get("competitors") or competition.get("competitors") or []
@@ -246,16 +262,6 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
     prefix = "⭐ " if is_featured else ""
     summary = f"⚽ {prefix}{matchup} · {stage}" if stage else f"⚽ {prefix}{matchup}"
 
-    home_logo_html = f'<img src="{home["logo"]}" height="16" width="16" /> ' if home.get("logo") else ""
-    away_logo_html = f' <img src="{away["logo"]}" height="16" width="16" />' if away.get("logo") else ""
-    html_description = (
-        f"<html><body>"
-        f"<h3>{matchup}</h3>"
-        f"<p>{home_logo_html}<b>{home['label']}</b> vs <b>{away['label']}</b>{away_logo_html}</p>"
-        f"<p><small>{_description(updated_at)}</small></p>"
-        f"</body></html>"
-    )
-
     return {
         "id": event["id"],
         "summary": summary,
@@ -263,13 +269,10 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
         "start_time": start_time,
         "location": event.get("location") or _venue(competition.get("venue") or {}),
         "description": _description(updated_at),
-        "html_description": html_description,
         "stage": stage,
         "is_featured": is_featured,
         "home_name": home.get("name"),
         "away_name": away.get("name"),
-        "home_logo": home.get("logo"),
-        "away_logo": away.get("logo"),
     }
 
 
@@ -284,15 +287,15 @@ def _competitors(competitors: Iterable[Dict[str, Any]]) -> List[Dict[str, Option
     for item in competitors:
         team = item.get("team") if isinstance(item.get("team"), dict) else item
         name = team.get("displayName") or team.get("name") or "TBD"
-        logo = team.get("logo") if isinstance(team, dict) else None
+        abbr = team.get("abbreviation") if isinstance(team, dict) else None
+        label = _team_label(name, abbr)
         parsed.append(
             {
                 "name": name,
-                "label": name,
+                "label": label,
                 "score": item.get("score"),
                 "home_away": item.get("homeAway"),
                 "order": item.get("order", 99),
-                "logo": logo,
             }
         )
     return parsed
@@ -313,7 +316,6 @@ def _home_away(competitors: List[Dict[str, Optional[str]]]) -> tuple:
                 "score": None,
                 "home_away": None,
                 "order": 99,
-                "logo": None,
             }
         )
     return ordered[0], ordered[1]
