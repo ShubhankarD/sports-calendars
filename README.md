@@ -10,16 +10,21 @@ https://ShubhankarD.github.io/sports-calendars/usopen_schedule.ics
 
 https://ShubhankarD.github.io/sports-calendars/worldcup_schedule.ics
 
+https://ShubhankarD.github.io/sports-calendars/ucl_schedule.ics
+
 Apple Calendar users can also try:
 
-webcal://ShubhakarD.github.io/sports-calendars/usopen_schedule.ics
+webcal://ShubhankarD.github.io/sports-calendars/usopen_schedule.ics
 
 webcal://ShubhankarD.github.io/sports-calendars/worldcup_schedule.ics
+
+webcal://ShubhankarD.github.io/sports-calendars/ucl_schedule.ics
 
 ## How it works
 
 - `run_tournament.py` fetches US Open feeds and writes `usopen_schedule.ics`.
 - `run_worldcup.py` fetches the FIFA World Cup 2026 schedule and writes `worldcup_schedule.ics`.
+- `run_ucl.py` fetches the UEFA Champions League schedule and writes `ucl_schedule.ics`.
 - A GitHub Action runs hourly and pushes the files to the `gh-pages` branch.
 - GitHub Pages serves the files at stable URLs that calendar apps can poll.
 

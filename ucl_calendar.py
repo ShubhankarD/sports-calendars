@@ -1,0 +1,224 @@
+from datetime import datetime, timedelta, timezone
+from typing import Any, Dict, Iterable, List, Optional
+
+import requests
+from ics import Calendar, Event
+from ics.contentline import ContentLine
+from ics.contentline import ContentLine as EventContentLine
+
+ESPN_UCL_SCOREBOARD_URL = (
+    "https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=soccer&league=uefa.champions"
+)
+ESPN_UCL_SCOREBOARD_FALLBACK_URL = (
+    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/scoreboard"
+)
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/131.0 Safari/537.36",
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://www.espn.com/",
+}
+DEFAULT_EVENT_HOURS = 2
+SHOW_SCORE_AFTER = timedelta(days=1)
+
+
+def fetch_schedule(url: str = ESPN_UCL_SCOREBOARD_URL) -> Dict[str, Any]:
+    """Fetch the ESPN UCL scoreboard header payload, falling back if needed."""
+    urls = [url]
+    if url == ESPN_UCL_SCOREBOARD_URL:
+        urls.append(ESPN_UCL_SCOREBOARD_FALLBACK_URL)
+
+    errors = []
+    for candidate_url in urls:
+        try:
+            response = requests.get(candidate_url, headers=HEADERS, timeout=20)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as error:
+            errors.append(f"{candidate_url}: {error}")
+
+    raise RuntimeError("Unable to fetch ESPN Champions League schedule. " + " | ".join(errors))
+
+
+def parse_matches(data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    updated_at = datetime.now(timezone.utc)
+    events = []
+
+    # Handle site.web.api header format or site.api format
+    if "sports" in data:
+        leagues = (data.get("sports") or [{}])[0].get("leagues") or [{}]
+        events = (leagues[0] or {}).get("events") or []
+    else:
+        events = data.get("events") or []
+
+    matches = [_parse_event(event, updated_at) for event in events]
+    return sorted(matches, key=lambda match: match["start_time"])
+
+
+def create_calendar(matches: Iterable[Dict[str, Any]]) -> Calendar:
+    cal = Calendar()
+    cal.method = "PUBLISH"
+    cal.prodid = "-//Sports Calendars//UEFA Champions League//EN"
+    cal.extra.append(ContentLine(name="CALSCALE", params={}, value="GREGORIAN"))
+    cal.extra.append(ContentLine(name="X-WR-CALNAME", params={}, value="UEFA Champions League"))
+    cal.extra.append(
+        ContentLine(
+            name="REFRESH-INTERVAL",
+            params={"VALUE": ["DURATION"]},
+            value="PT1H",
+        )
+    )
+    cal.extra.append(ContentLine(name="X-PUBLISHED-TTL", params={}, value="PT1H"))
+
+    for match in matches:
+        event = Event()
+        event.summary = match["summary"]
+        event.begin = match["start_time"]
+        event.duration = timedelta(hours=DEFAULT_EVENT_HOURS)
+        event.location = match["location"]
+        event.description = match["description"]
+        event.transparent = True
+        event.status = "CONFIRMED"
+        event.uid = f"ucl-{match['id']}@github-pages"
+        event.extra.append(EventContentLine(name="SEQUENCE", params={}, value="1"))
+        cal.events.append(event)
+
+    return cal
+
+
+def build_calendar(url: str = ESPN_UCL_SCOREBOARD_URL) -> Calendar:
+    return create_calendar(parse_matches(fetch_schedule(url)))
+
+
+def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
+    # header endpoint events put competitors under event root or inside competition
+    competition = (event.get("competitions") or [{}])[0]
+    raw_competitors = event.get("competitors") or competition.get("competitors") or []
+    competitors = _competitors(raw_competitors)
+    home, away = _home_away(competitors)
+    start_time = _parse_datetime(event.get("date") or competition.get("date"))
+    stage = _stage_name(event)
+    status = event.get("status") or competition.get("status") or {}
+    if isinstance(status, dict) and "type" in status and isinstance(status["type"], dict):
+        status_type = status["type"]
+    else:
+        status_type = status if isinstance(status, dict) else {}
+
+    matchup = _matchup_summary(home, away, status_type, start_time, updated_at)
+    summary = f"⚽ {matchup} · {stage}" if stage else f"⚽ {matchup}"
+
+    return {
+        "id": event["id"],
+        "summary": summary,
+        "start_time": start_time,
+        "location": event.get("location") or _venue(competition.get("venue") or {}),
+        "description": _description(updated_at),
+    }
+
+
+def _parse_datetime(value: Optional[str]) -> datetime:
+    if not value:
+        raise ValueError("Event is missing a start date")
+    return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
+
+
+def _competitors(competitors: Iterable[Dict[str, Any]]) -> List[Dict[str, Optional[str]]]:
+    parsed = []
+    for item in competitors:
+        team = item.get("team") if isinstance(item.get("team"), dict) else item
+        name = team.get("displayName") or team.get("name") or "TBD"
+        parsed.append(
+            {
+                "name": name,
+                "label": name,
+                "score": item.get("score"),
+                "home_away": item.get("homeAway"),
+                "order": item.get("order", 99),
+            }
+        )
+    return parsed
+
+
+def _home_away(competitors: List[Dict[str, Optional[str]]]) -> tuple:
+    home = next((team for team in competitors if team.get("home_away") == "home"), None)
+    away = next((team for team in competitors if team.get("home_away") == "away"), None)
+    if home and away:
+        return home, away
+
+    ordered = sorted(competitors, key=lambda team: team.get("order") or 99)
+    while len(ordered) < 2:
+        ordered.append(
+            {
+                "name": "TBD",
+                "label": "TBD",
+                "score": None,
+                "home_away": None,
+                "order": 99,
+            }
+        )
+    return ordered[0], ordered[1]
+
+
+def _matchup_summary(
+    home: Dict[str, Optional[str]],
+    away: Dict[str, Optional[str]],
+    status: Dict[str, Any],
+    start_time: datetime,
+    updated_at: datetime,
+) -> str:
+    if _should_show_score(home, away, status, start_time, updated_at):
+        return f"{home['label']} {home['score']}-{away['score']} {away['label']}"
+    return f"{home['label']} vs {away['label']}"
+
+
+def _should_show_score(
+    home: Dict[str, Optional[str]],
+    away: Dict[str, Optional[str]],
+    status: Dict[str, Any],
+    start_time: datetime,
+    updated_at: datetime,
+) -> bool:
+    if not status.get("completed"):
+        return False
+    if not home.get("score") or not away.get("score"):
+        return False
+    return updated_at - start_time >= SHOW_SCORE_AFTER
+
+
+def _venue(venue: Dict[str, Any]) -> str:
+    name = venue.get("fullName")
+    address = venue.get("address") or {}
+    city = address.get("city")
+    return ", ".join(part for part in [name, city] if part)
+
+
+def _stage_name(event: Dict[str, Any]) -> Optional[str]:
+    group = event.get("group")
+    if isinstance(group, dict):
+        name = group.get("name") or group.get("shortName")
+        if name:
+            return name
+
+    alt_note = event.get("altGameNote")
+    if alt_note and "UEFA Champions League," in alt_note:
+        return alt_note.replace("UEFA Champions League,", "").strip()
+    elif alt_note:
+        return alt_note
+
+    season_slug = (event.get("season") or {}).get("slug") if isinstance(event.get("season"), dict) else None
+    if season_slug:
+        return season_slug.replace("-", " ").title()
+
+    return None
+
+
+def _description(updated_at: datetime) -> str:
+    timestamp = _sync2cal_timestamp(updated_at)
+    return f"Last updated: {timestamp}"
+
+
+def _sync2cal_timestamp(value: datetime) -> str:
+    value = value.astimezone(timezone.utc)
+    return f"{value.strftime('%b')} {value.day}, {value.year} at {value:%H:%M} UTC"
