@@ -126,28 +126,13 @@ def parse_matches(data: Dict[str, Any], group_before_knockouts: bool = True) -> 
 
         header = f"UEFA Champions League | {stage}"
         plain_lines = []
-        html_lines = []
 
         for idx, i in enumerate(items, start=1):
-            if i["is_featured"]:
-                plain_lines.append(f"⭐ {idx}. {i['matchup']}  ")
-                html_lines.append(f"{idx}. <b>⭐ {i['matchup']}</b><br>")
-            else:
-                plain_lines.append(f"{idx}. {i['matchup']}  ")
-                html_lines.append(f"{idx}. {i['matchup']}<br>")
+            matchup_text = f"**{i['matchup']}**" if i["is_featured"] else i["matchup"]
+            plain_lines.append(f"{idx}. {matchup_text}  ")
 
         plain_body = "\n".join(plain_lines)
         description = f"{header}\n{plain_body}\n\n{_description(updated_at)}"
-
-        html_body = "".join(html_lines)
-        html_description = (
-            f'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">'
-            f"<html><body>"
-            f"<b>{header}</b><br><br>"
-            f"{html_body}<br>"
-            f"<small>{_description(updated_at)}</small>"
-            f"</body></html>"
-        )
 
         # Stable group ID
         item_ids = "-".join(sorted(str(i["id"]) for i in items))
@@ -156,11 +141,10 @@ def parse_matches(data: Dict[str, Any], group_before_knockouts: bool = True) -> 
         final_matches.append(
             {
                 "id": group_id,
-                "summary": f"⚽ UEFA Champions League - {stage}",
+                "summary": f"UEFA Champions League - {stage}",
                 "start_time": start_time,
                 "location": location,
                 "description": description,
-                "html_description": html_description,
                 "stage": stage,
             }
         )
@@ -190,16 +174,6 @@ def create_calendar(matches: Iterable[Dict[str, Any]]) -> Calendar:
         event.duration = timedelta(hours=DEFAULT_EVENT_HOURS)
         event.location = match["location"]
         event.description = match["description"]
-
-        if match.get("html_description"):
-            event.extra.append(
-                EventContentLine(
-                    name="X-ALT-DESC",
-                    params={"FMTTYPE": ["text/html"]},
-                    value=match["html_description"],
-                )
-            )
-
         event.transparent = True
         event.status = "CONFIRMED"
         event.uid = f"ucl-{match['id']}@github-pages"
@@ -241,17 +215,7 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
 
     is_featured = _is_top_club(home.get("name")) or _is_top_club(away.get("name"))
     matchup = _matchup_summary(home, away, status_type, start_time, updated_at)
-
-    prefix = "⭐ " if is_featured else ""
-    summary = f"⚽ {prefix}{matchup} · {stage}" if stage else f"⚽ {prefix}{matchup}"
-
-    html_description = (
-        f'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">'
-        f"<html><body>"
-        f"<b>{matchup}</b><br>"
-        f"<small>{_description(updated_at)}</small>"
-        f"</body></html>"
-    )
+    summary = f"{matchup} · {stage}" if stage else matchup
 
     return {
         "id": event["id"],
@@ -260,7 +224,6 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
         "start_time": start_time,
         "location": event.get("location") or _venue(competition.get("venue") or {}),
         "description": _description(updated_at),
-        "html_description": html_description,
         "stage": stage,
         "is_featured": is_featured,
         "home_name": home.get("name"),

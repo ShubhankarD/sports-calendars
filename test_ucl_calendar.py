@@ -11,7 +11,7 @@ from ucl_calendar import (
 )
 
 
-def test_parse_matches_grouped_with_star_featured_matches():
+def test_parse_matches_grouped_with_bold_featured_matches():
     mock_data = {
         "sports": [
             {
@@ -50,10 +50,9 @@ def test_parse_matches_grouped_with_star_featured_matches():
     matches = parse_matches(mock_data, group_before_knockouts=True)
     assert len(matches) == 1
     m = matches[0]
-    assert m["summary"] == "⚽ UEFA Champions League - League Phase"
-    assert "⭐ 1. Real Madrid vs Arsenal" in m["description"]
+    assert m["summary"] == "UEFA Champions League - League Phase"
+    assert "1. **Real Madrid vs Arsenal**" in m["description"]
     assert "2. LASK Linz vs AEK Athens" in m["description"]
-    assert "<b>⭐ Real Madrid vs Arsenal</b>" in m["html_description"]
 
 
 def test_parse_matches_knockout_individual():
@@ -83,28 +82,26 @@ def test_parse_matches_knockout_individual():
 
     matches = parse_matches(mock_data, group_before_knockouts=True)
     assert len(matches) == 1
-    assert matches[0]["summary"] == "⚽ ⭐ Bayern Munich vs Arsenal · Round of 16"
+    assert matches[0]["summary"] == "Bayern Munich vs Arsenal · Round of 16"
 
 
 def test_create_calendar():
     matches = [
         {
             "id": "101",
-            "summary": "⚽ UEFA Champions League - League Phase",
+            "summary": "UEFA Champions League - League Phase",
             "start_time": datetime(2026, 9, 8, 16, 45, tzinfo=timezone.utc),
             "location": "Multiple Venues",
-            "description": "UEFA Champions League | League Phase\n⭐ 1. Real Madrid vs Arsenal\n2. LASK Linz vs AEK Athens",
-            "html_description": "<html><body><b>⭐ 1. Real Madrid vs Arsenal</b></body></html>",
+            "description": "UEFA Champions League | League Phase\n1. **Real Madrid vs Arsenal**\n2. LASK Linz vs AEK Athens",
         }
     ]
 
     cal = create_calendar(matches)
     assert len(cal.events) == 1
     event = list(cal.events)[0]
-    assert event.summary == "⚽ UEFA Champions League - League Phase"
+    assert event.summary == "UEFA Champions League - League Phase"
     assert event.uid == "ucl-101@github-pages"
     assert event.location == "Multiple Venues"
-    assert any("X-ALT-DESC" in line.name for line in event.extra)
 
 
 def test_should_show_score():
