@@ -1,0 +1,417 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Sports Calendars//UEFA Champions League//EN
+METHOD:PUBLISH
+BEGIN:VEVENT
+DTSTART:20260908T164500Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-8a2999b1a0@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Club Brugge vs Aston
+  Villa  \n2. AEK Athens vs LASK Linz  \n\nLast updated: Sep 6\, 2026 at
+ 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Club Brugge vs Aston Villa</b><br>2. AEK Athens vs LASK
+ Linz<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20260908T190000Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-2a578369ef@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Borussia Dortmund vs
+  Villarreal  \n⭐ 2. FC Porto vs Manchester City  \n⭐ 3. Real Madrid vs
+ Internazionale  \n4. Lille vs Real Betis  \n\nLast updated: Sep 6\, 2026
+ at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Borussia Dortmund vs Villarreal</b><br>2. <b>⭐ FC Porto vs
+ Manchester City</b><br>3. <b>⭐ Real Madrid vs Internazionale</b><br>4.
+ Lille vs Real Betis<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20260909T164500Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-9c9acecc3c@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Barcelona vs
+ Feyenoord Rotterdam  \n2. VfB Stuttgart vs Viking FK  \n\nLast updated:
+ Sep 6\, 2026 at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Barcelona vs Feyenoord Rotterdam</b><br>2. VfB Stuttgart vs Viking
+ FK<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20260909T190000Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-3b04e4fbf5@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Liverpool vs
+ Atlético Madrid  \n⭐ 2. Napoli vs Arsenal  \n⭐ 3. Paris Saint-Germain vs
+ Slovan Bratislava  \n4. Sporting CP vs Galatasaray  \n\nLast updated: Sep
+ 6\, 2026 at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Liverpool vs Atlético Madrid</b><br>2. <b>⭐ Napoli vs
+ Arsenal</b><br>3. <b>⭐ Paris Saint-Germain vs Slovan Bratislava</b><br>4.
+ Sporting CP vs Galatasaray<br><br><small>Last updated: Sep 6, 2026 at
+ 19:28 UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20260910T164500Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-d35ba236dd@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n1. Fenerbahce vs AS Roma
+   \n2. PSV Eindhoven vs Shakhtar Donetsk  \n\nLast updated: Sep 6\, 2026
+ at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  Fenerbahce vs AS Roma<br>2. PSV Eindhoven vs Shakhtar
+ Donetsk<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20260910T190000Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-03adb4e7cf@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Bayern Munich vs
+ Bodo/Glimt  \n⭐ 2. Manchester United vs Sabah FK  \n3. Como vs RB Leipzig
+   \n4. Slavia Prague vs Lens  \n\nLast updated: Sep 6\, 2026 at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Bayern Munich vs Bodo/Glimt</b><br>2. <b>⭐ Manchester United vs
+ Sabah FK</b><br>3. Como vs RB Leipzig<br>4. Slavia Prague vs
+ Lens<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261013T164500Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-67c67f067f@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n1. Lens vs Sporting CP
+ \n2. Sabah FK vs Slavia Prague  \n\nLast updated: Sep 6\, 2026 at 19:28
+ UTC
+LOCATION:Stade Bollaert-Delelis
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  Lens vs Sporting CP<br>2. Sabah FK vs Slavia Prague<br><br><small>Last
+ updated: Sep 6, 2026 at 19:28 UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261013T190000Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-5e2a5999ce@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Arsenal vs Lille
+ \n⭐ 2. Atlético Madrid vs Manchester United  \n⭐ 3. Galatasaray vs
+ Barcelona  \n⭐ 4. Internazionale vs Club Brugge  \n⭐ 5. Viking FK vs
+ Bayern Munich  \n⭐ 6. Villarreal vs Napoli  \n7. RB Leipzig vs PSV
+ Eindhoven  \n\nLast updated: Sep 6\, 2026 at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Arsenal vs Lille</b><br>2. <b>⭐ Atlético Madrid vs Manchester
+ United</b><br>3. <b>⭐ Galatasaray vs Barcelona</b><br>4. <b>⭐
+ Internazionale vs Club Brugge</b><br>5. <b>⭐ Viking FK vs Bayern
+ Munich</b><br>6. <b>⭐ Villarreal vs Napoli</b><br>7. RB Leipzig vs PSV
+ Eindhoven<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261014T164500Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-e74fff1737@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. LASK Linz vs
+ Liverpool  \n2. Feyenoord Rotterdam vs Como  \n\nLast updated: Sep 6\,
+ 2026 at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ LASK Linz vs Liverpool</b><br>2. Feyenoord Rotterdam vs
+ Como<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261014T190000Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-8c2d3a2f08@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. AS Roma vs Real
+ Madrid  \n⭐ 2. Aston Villa vs Fenerbahce  \n⭐ 3. Bodo/Glimt vs Borussia
+ Dortmund  \n⭐ 4. Manchester City vs Paris Saint-Germain  \n5. Real Betis
+ vs FC Porto  \n6. Shakhtar Donetsk vs AEK Athens  \n7. Slovan Bratislava
+ vs VfB Stuttgart  \n\nLast updated: Sep 6\, 2026 at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ AS Roma vs Real Madrid</b><br>2. <b>⭐ Aston Villa vs
+ Fenerbahce</b><br>3. <b>⭐ Bodo/Glimt vs Borussia Dortmund</b><br>4. <b>⭐
+ Manchester City vs Paris Saint-Germain</b><br>5. Real Betis vs FC
+ Porto<br>6. Shakhtar Donetsk vs AEK Athens<br>7. Slovan Bratislava vs VfB
+ Stuttgart<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261020T164500Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-ce2aeb40fc@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Sabah FK vs Borussia
+  Dortmund  \n2. Fenerbahce vs Slavia Prague  \n\nLast updated: Sep 6\,
+ 2026 at 19:28 UTC
+LOCATION:Ulker Stadyumu
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Sabah FK vs Borussia Dortmund</b><br>2. Fenerbahce vs Slavia
+ Prague<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261020T190000Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-965cbf8e51@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Liverpool vs
+ Villarreal  \n⭐ 2. Manchester City vs AEK Athens  \n⭐ 3. Napoli vs
+ Bodo/Glimt  \n⭐ 4. Paris Saint-Germain vs Barcelona  \n⭐ 5. VfB Stuttgart
+ vs Atlético Madrid  \n6. AS Roma vs Slovan Bratislava  \n7. FC Porto vs
+ PSV Eindhoven  \n\nLast updated: Sep 6\, 2026 at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Liverpool vs Villarreal</b><br>2. <b>⭐ Manchester City vs AEK
+ Athens</b><br>3. <b>⭐ Napoli vs Bodo/Glimt</b><br>4. <b>⭐ Paris Saint-
+ Germain vs Barcelona</b><br>5. <b>⭐ VfB Stuttgart vs Atlético
+ Madrid</b><br>6. AS Roma vs Slovan Bratislava<br>7. FC Porto vs PSV
+ Eindhoven<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261021T164500Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-f991d3b91b@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Como vs Manchester
+ United  \n2. Lille vs Galatasaray  \n\nLast updated: Sep 6\, 2026 at 19:28
+  UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Como vs Manchester United</b><br>2. Lille vs
+ Galatasaray<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261021T190000Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-420598b618@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Aston Villa vs
+ Viking FK  \n⭐ 2. Bayern Munich vs Arsenal  \n⭐ 3. Internazionale vs
+ Shakhtar Donetsk  \n⭐ 4. Real Madrid vs RB Leipzig  \n5. Club Brugge vs
+ Lens  \n6. Real Betis vs Feyenoord Rotterdam  \n7. Sporting CP vs LASK
+ Linz  \n\nLast updated: Sep 6\, 2026 at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Aston Villa vs Viking FK</b><br>2. <b>⭐ Bayern Munich vs
+ Arsenal</b><br>3. <b>⭐ Internazionale vs Shakhtar Donetsk</b><br>4. <b>⭐
+ Real Madrid vs RB Leipzig</b><br>5. Club Brugge vs Lens<br>6. Real Betis
+ vs Feyenoord Rotterdam<br>7. Sporting CP vs LASK Linz<br><br><small>Last
+ updated: Sep 6, 2026 at 19:28 UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261103T174500Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-fefe67b1f3@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n1. Galatasaray vs VfB
+ Stuttgart  \n2. Shakhtar Donetsk vs Sporting CP  \n\nLast updated: Sep 6\,
+  2026 at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  Galatasaray vs VfB Stuttgart<br>2. Shakhtar Donetsk vs Sporting
+ CP<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261103T200000Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-184d87f918@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Atlético Madrid vs
+ Bayern Munich  \n⭐ 2. Barcelona vs Aston Villa  \n⭐ 3. Feyenoord Rotterdam
+  vs Internazionale  \n⭐ 4. Manchester United vs AS Roma  \n⭐ 5. Villarreal
+  vs Paris Saint-Germain  \n6. Bodo/Glimt vs Lille  \n7. LASK Linz vs
+ Slovan Bratislava  \n\nLast updated: Sep 6\, 2026 at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Atlético Madrid vs Bayern Munich</b><br>2. <b>⭐ Barcelona vs Aston
+ Villa</b><br>3. <b>⭐ Feyenoord Rotterdam vs Internazionale</b><br>4. <b>⭐
+ Manchester United vs AS Roma</b><br>5. <b>⭐ Villarreal vs Paris Saint-
+ Germain</b><br>6. Bodo/Glimt vs Lille<br>7. LASK Linz vs Slovan
+ Bratislava<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261104T174500Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-db73133acc@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. AEK Athens vs Real
+ Madrid  \n⭐ 2. Fenerbahce vs Liverpool  \n\nLast updated: Sep 6\, 2026 at
+ 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ AEK Athens vs Real Madrid</b><br>2. <b>⭐ Fenerbahce vs
+ Liverpool</b><br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261104T200000Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-fdecf4f5dd@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Borussia Dortmund vs
+  Real Betis  \n⭐ 2. FC Porto vs Napoli  \n⭐ 3. RB Leipzig vs Manchester
+ City  \n⭐ 4. Slavia Prague vs Arsenal  \n5. Lens vs Como  \n6. PSV
+ Eindhoven vs Club Brugge  \n7. Viking FK vs Sabah FK  \n\nLast updated:
+ Sep 6\, 2026 at 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Borussia Dortmund vs Real Betis</b><br>2. <b>⭐ FC Porto vs
+ Napoli</b><br>3. <b>⭐ RB Leipzig vs Manchester City</b><br>4. <b>⭐ Slavia
+ Prague vs Arsenal</b><br>5. Lens vs Como<br>6. PSV Eindhoven vs Club
+ Brugge<br>7. Viking FK vs Sabah FK<br><br><small>Last updated: Sep 6, 2026
+  at 19:28 UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261124T174500Z
+DURATION:PT2H
+SUMMARY:⚽ UEFA Champions League - League Phase
+UID:ucl-group-1576f014f5@github-pages
+DESCRIPTION:UEFA Champions League | League Phase\n⭐ 1. Galatasaray vs Aston
+  Villa  \n2. Bodo/Glimt vs LASK Linz  \n\nLast updated: Sep 6\, 2026 at
+ 19:28 UTC
+LOCATION:Multiple Venues
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>UEFA Champions League | League Phase</b><br><br>1.
+  <b>⭐ Galatasaray vs Aston Villa</b><br>2. Bodo/Glimt vs LASK
+ Linz<br><br><small>Last updated: Sep 6, 2026 at 19:28
+ UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20261124T200000Z
+DURATION:PT2H
+SUMMARY:⚽ ⭐ Arsenal vs Borussia Dortmund · League Phase
+UID:ucl-401915295@github-pages
+DESCRIPTION:Last updated: Sep 6\, 2026 at 19:28 UTC
+LOCATION:Emirates Stadium
+STATUS:CONFIRMED
+DTSTAMP:20260906T192856Z
+TRANSPARENT:TRUE
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML
+ 3.2//EN"><html><body><b>Arsenal vs Borussia Dortmund</b><br><small>Last
+ updated: Sep 6, 2026 at 19:28 UTC</small></body></html>
+SEQUENCE:1
+END:VEVENT
+CALSCALE:GREGORIAN
+X-WR-CALNAME:UEFA Champions League
+REFRESH-INTERVAL;VALUE=DURATION:PT1H
+X-PUBLISHED-TTL:PT1H
+END:VCALENDAR
