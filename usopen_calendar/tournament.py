@@ -55,6 +55,19 @@ def parse_schedule(
                 t1_label = team_label(match_data.get("team1"))
                 t2_label = team_label(match_data.get("team2"))
 
+                # Filter out standalone empty TBD placeholder slots without event or round names
+                if (
+                    (not t1_label or t1_label == "TBD")
+                    and (not t2_label or t2_label == "TBD")
+                    and not event_name
+                    and not round_name
+                ):
+                    continue
+
+                # Filter out Boys' and Girls' junior events
+                if event_name and ("boy" in event_name.lower() or "girl" in event_name.lower()):
+                    continue
+
                 raw_items.append(
                     {
                         "eventName": event_name,
