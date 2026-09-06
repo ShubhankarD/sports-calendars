@@ -1,5 +1,7 @@
+from collections import defaultdict
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, Iterable, List, Optional
+import hashlib
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import requests
 from ics import Calendar, Event
@@ -23,11 +25,28 @@ HEADERS = {
 DEFAULT_EVENT_HOURS = 2
 SHOW_SCORE_AFTER = timedelta(days=1)
 
+KNOCKOUT_STAGES = {
+    "round of 16",
+    "round-of-16",
+    "quarterfinals",
+    "quarter-finals",
+    "semifinals",
+    "semi-finals",
+    "final",
+}
 
-def fetch_schedule(url: str = ESPN_UCL_SCOREBOARD_URL) -> Dict[str, Any]:
-    """Fetch the ESPN UCL scoreboard header payload, falling back if needed."""
+
+def fetch_schedule(url: Optional[str] = None) -> Dict[str, Any]:
+    """Fetch the ESPN UCL scoreboard header payload for the current season, falling back if needed."""
+    if url is None:
+        now = datetime.now(timezone.utc)
+        season_start_year = now.year if now.month >= 7 else now.year - 1
+        season_end_year = season_start_year + 1
+        dates_param = f"{season_start_year}0801-{season_end_year}0701"
+        url = f"{ESPN_UCL_SCOREBOARD_URL}&dates={dates_param}"
+
     urls = [url]
-    if url == ESPN_UCL_SCOREBOARD_URL:
+    if url.startswith(ESPN_UCL_SCOREBOARD_URL):
         urls.append(ESPN_UCL_SCOREBOARD_FALLBACK_URL)
 
     errors = []
@@ -42,7 +61,7 @@ def fetch_schedule(url: str = ESPN_UCL_SCOREBOARD_URL) -> Dict[str, Any]:
     raise RuntimeError("Unable to fetch ESPN Champions League schedule. " + " | ".join(errors))
 
 
-def parse_matches(data: Dict[str, Any]) -> List[Dict[str, Any]]:
+def parse_matches(data: Dict[str, Any], group_before_knockouts: bool = True) -> List[Dict[str, Any]]:
     updated_at = datetime.now(timezone.utc)
     events = []
 
@@ -53,8 +72,54 @@ def parse_matches(data: Dict[str, Any]) -> List[Dict[str, Any]]:
     else:
         events = data.get("events") or []
 
-    matches = [_parse_event(event, updated_at) for event in events]
-    return sorted(matches, key=lambda match: match["start_time"])
+    parsed_events = [_parse_event(event, updated_at) for event in events]
+
+    if not group_before_knockouts:
+        return sorted(parsed_events, key=lambda match: match["start_time"])
+
+    # Group matches before Round of 16 by (start_time, stage)
+    grouped: Dict[Tuple[datetime, str], List[Dict[str, Any]]] = defaultdict(list)
+    individual: List[Dict[str, Any]] = []
+
+    for item in parsed_events:
+        stage = item["stage"] or "League Phase"
+        if _is_knockout_stage(stage):
+            individual.append(item)
+        else:
+            grouped[(item["start_time"], stage)].append(item)
+
+    final_matches: List[Dict[str, Any]] = list(individual)
+
+    for (start_time, stage), items in grouped.items():
+        if len(items) == 1:
+            final_matches.append(items[0])
+            continue
+
+        # Multiple matches at same start_time before Round of 16 -> group into single event
+        courts = {i["location"] for i in items if i.get("location")}
+        location = next(iter(courts)) if len(courts) == 1 else "Multiple Venues"
+
+        header = f"UEFA Champions League | {stage}"
+        lines = [f"{idx}. {i['matchup']}  " for idx, i in enumerate(items, start=1)]
+        body = "\n".join(lines)
+        description = f"{header}\n{body}\n\n{_description(updated_at)}"
+
+        # Stable group ID
+        item_ids = "-".join(sorted(str(i["id"]) for i in items))
+        group_id = f"group-{hashlib.sha1(item_ids.encode('utf-8')).hexdigest()[:10]}"
+
+        final_matches.append(
+            {
+                "id": group_id,
+                "summary": f"⚽ UEFA Champions League - {stage}",
+                "start_time": start_time,
+                "location": location,
+                "description": description,
+                "stage": stage,
+            }
+        )
+
+    return sorted(final_matches, key=lambda match: match["start_time"])
 
 
 def create_calendar(matches: Iterable[Dict[str, Any]]) -> Calendar:
@@ -88,12 +153,18 @@ def create_calendar(matches: Iterable[Dict[str, Any]]) -> Calendar:
     return cal
 
 
-def build_calendar(url: str = ESPN_UCL_SCOREBOARD_URL) -> Calendar:
+def build_calendar(url: Optional[str] = None) -> Calendar:
     return create_calendar(parse_matches(fetch_schedule(url)))
 
 
+def _is_knockout_stage(stage: Optional[str]) -> bool:
+    if not stage:
+        return False
+    stage_lower = stage.lower()
+    return any(k in stage_lower for k in KNOCKOUT_STAGES)
+
+
 def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
-    # header endpoint events put competitors under event root or inside competition
     competition = (event.get("competitions") or [{}])[0]
     raw_competitors = event.get("competitors") or competition.get("competitors") or []
     competitors = _competitors(raw_competitors)
@@ -112,9 +183,11 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
     return {
         "id": event["id"],
         "summary": summary,
+        "matchup": matchup,
         "start_time": start_time,
         "location": event.get("location") or _venue(competition.get("venue") or {}),
         "description": _description(updated_at),
+        "stage": stage,
     }
 
 
