@@ -18,7 +18,7 @@ def parse_schedule(base_url: str = BASE_URL, min_tourn_day: int = INCLUDE_BEFORE
     for day in event_days:
         tourn_day = day.get("tournDay", 0)
         feed_url = day.get("feedUrl")
-        # filter early practice/qualifying days if needed
+        # Filter early practice/qualifying days if needed
         if not feed_url or (tourn_day is None or tourn_day < min_tourn_day):
             continue
 
@@ -29,9 +29,8 @@ def parse_schedule(base_url: str = BASE_URL, min_tourn_day: int = INCLUDE_BEFORE
         for court in courts:
             court_name = court.get("courtName", "Unknown Court")
             for match_data in court.get("matches", []):
-                # flags + names
-                players_team1 = team_label(match_data.get("team1"))
-                players_team2 = team_label(match_data.get("team2"))
+                p1 = team_label(match_data.get("team1"))
+                p2 = team_label(match_data.get("team2"))
 
                 # Some feeds have startEpoch on match OR on court
                 start_epoch = match_data.get("startEpoch") or court.get("startEpoch")
@@ -40,16 +39,33 @@ def parse_schedule(base_url: str = BASE_URL, min_tourn_day: int = INCLUDE_BEFORE
                     if start_epoch else None
                 )
 
-                title = f"{players_team1} vs {players_team2}".strip()
-                # if both sides missing, avoid " vs " or "🎾 vs 🎾"
-                if title.strip().lower() in {"vs", "🎾 vs 🎾"}:
+                if p1 == "TBD" and p2 == "TBD":
                     title = "Match (TBD)"
+                else:
+                    title = f"{p1} vs {p2}".strip()
+
+                if title.lower() in {"vs", "tbd vs tbd", "match (tbd)"}:
+                    title = "Match (TBD)"
+
+                event_name = match_data.get("eventName")
+                round_name = match_data.get("roundName")
+                desc_parts = [p for p in [event_name, round_name, display_date] if p]
+                description = " - ".join(desc_parts[:2])
+                if len(desc_parts) > 2:
+                    description += f" | {desc_parts[2]}"
 
                 matches_all.append({
                     "title": title,
                     "court": court_name,
-                    "description": f"{match_data.get('eventName')} - {match_data.get('roundName')} | {display_date}",
+                    "description": description,
                     "start_time": start_time
                 })
 
+    matches_all.sort(key=_sort_key_for_output)
     return matches_all
+
+def _sort_key_for_output(m: Match):
+    st = m.get("start_time")
+    if isinstance(st, datetime) and st.tzinfo is not None:
+        return (False, st, m.get("court") or "", m.get("title") or "")
+    return (True, datetime.max.replace(tzinfo=ET), m.get("court") or "", m.get("title") or "")
