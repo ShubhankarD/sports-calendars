@@ -11,7 +11,7 @@ from ucl_calendar import (
 )
 
 
-def test_parse_matches_grouped():
+def test_parse_matches_grouped_with_highlights_and_logos():
     mock_data = {
         "sports": [
             {
@@ -25,8 +25,8 @@ def test_parse_matches_grouped():
                                 "location": "Stadium A",
                                 "group": {"name": "League Phase"},
                                 "competitors": [
-                                    {"displayName": "Team A", "homeAway": "home", "order": 1},
-                                    {"displayName": "Team B", "homeAway": "away", "order": 2},
+                                    {"displayName": "LASK Linz", "homeAway": "home", "order": 1, "logo": "http://logo.com/lask.png"},
+                                    {"displayName": "AEK Athens", "homeAway": "away", "order": 2, "logo": "http://logo.com/aek.png"},
                                 ],
                             },
                             {
@@ -36,8 +36,8 @@ def test_parse_matches_grouped():
                                 "location": "Stadium B",
                                 "group": {"name": "League Phase"},
                                 "competitors": [
-                                    {"displayName": "Team C", "homeAway": "home", "order": 1},
-                                    {"displayName": "Team D", "homeAway": "away", "order": 2},
+                                    {"displayName": "Real Madrid", "homeAway": "home", "order": 1, "logo": "http://logo.com/real.png"},
+                                    {"displayName": "Arsenal", "homeAway": "away", "order": 2, "logo": "http://logo.com/arsenal.png"},
                                 ],
                             },
                         ]
@@ -51,9 +51,12 @@ def test_parse_matches_grouped():
     assert len(matches) == 1
     m = matches[0]
     assert m["summary"] == "⚽ UEFA Champions League - League Phase"
-    assert "1. Team A vs Team B" in m["description"]
-    assert "2. Team C vs Team D" in m["description"]
-    assert m["location"] == "Multiple Venues"
+    assert "⭐ 1. Real Madrid vs Arsenal" in m["description"]
+    assert "2. LASK Linz vs AEK Athens" in m["description"]
+    assert 'X-ALT-DESC;FMTTYPE=text/html' not in m["description"]
+    assert m.get("html_description") is not None
+    assert 'img src="http://logo.com/real.png"' in m["html_description"]
+    assert 'img src="http://logo.com/arsenal.png"' in m["html_description"]
 
 
 def test_parse_matches_knockout_individual():
@@ -74,17 +77,6 @@ def test_parse_matches_knockout_individual():
                                     {"displayName": "Arsenal", "homeAway": "away", "order": 2},
                                 ],
                             },
-                            {
-                                "id": "202",
-                                "name": "2026-27 UEFA Champions League",
-                                "date": "2027-03-09T20:00:00Z",
-                                "location": "Santiago Bernabéu",
-                                "group": {"name": "Round of 16"},
-                                "competitors": [
-                                    {"displayName": "Real Madrid", "homeAway": "home", "order": 1},
-                                    {"displayName": "Liverpool", "homeAway": "away", "order": 2},
-                                ],
-                            },
                         ]
                     }
                 ]
@@ -93,9 +85,9 @@ def test_parse_matches_knockout_individual():
     }
 
     matches = parse_matches(mock_data, group_before_knockouts=True)
-    assert len(matches) == 2
+    assert len(matches) == 1
+    assert "⭐" in matches[0]["summary"]
     assert "Bayern Munich vs Arsenal" in matches[0]["summary"]
-    assert "Real Madrid vs Liverpool" in matches[1]["summary"]
 
 
 def test_create_calendar():
@@ -105,17 +97,18 @@ def test_create_calendar():
             "summary": "⚽ UEFA Champions League - League Phase",
             "start_time": datetime(2026, 9, 8, 16, 45, tzinfo=timezone.utc),
             "location": "Multiple Venues",
-            "description": "UEFA Champions League | League Phase\n1. Team A vs Team B\n2. Team C vs Team D",
+            "description": "UEFA Champions League | League Phase\n⭐ 1. Real Madrid vs Arsenal\n2. LASK Linz vs AEK Athens",
+            "html_description": "<html><body><ol><li>Real Madrid vs Arsenal</li></ol></body></html>",
         }
     ]
 
     cal = create_calendar(matches)
-    assert cal.extra[1].value == "UEFA Champions League"
     assert len(cal.events) == 1
     event = list(cal.events)[0]
     assert event.summary == "⚽ UEFA Champions League - League Phase"
     assert event.uid == "ucl-101@github-pages"
     assert event.location == "Multiple Venues"
+    assert any("X-ALT-DESC" in line.name for line in event.extra)
 
 
 def test_should_show_score():

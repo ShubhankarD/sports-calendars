@@ -35,6 +35,29 @@ KNOCKOUT_STAGES = {
     "final",
 }
 
+TOP_CLUBS = {
+    "real madrid",
+    "barcelona",
+    "bayern munich",
+    "manchester city",
+    "arsenal",
+    "liverpool",
+    "paris saint-germain",
+    "psg",
+    "internazionale",
+    "inter milan",
+    "juventus",
+    "borussia dortmund",
+    "atlético madrid",
+    "atletico madrid",
+    "chelsea",
+    "manchester united",
+    "ac milan",
+    "bayer leverkusen",
+    "aston villa",
+    "napoli",
+}
+
 
 def fetch_schedule(url: Optional[str] = None) -> Dict[str, Any]:
     """Fetch the ESPN UCL scoreboard header payload for the current season, falling back if needed."""
@@ -95,14 +118,40 @@ def parse_matches(data: Dict[str, Any], group_before_knockouts: bool = True) -> 
             final_matches.append(items[0])
             continue
 
-        # Multiple matches at same start_time before Round of 16 -> group into single event
+        # Sort items so matches featuring top clubs appear first
+        items.sort(key=lambda i: (0 if i["is_featured"] else 1, i["matchup"]))
+
         courts = {i["location"] for i in items if i.get("location")}
         location = next(iter(courts)) if len(courts) == 1 else "Multiple Venues"
 
         header = f"UEFA Champions League | {stage}"
-        lines = [f"{idx}. {i['matchup']}  " for idx, i in enumerate(items, start=1)]
-        body = "\n".join(lines)
-        description = f"{header}\n{body}\n\n{_description(updated_at)}"
+        plain_lines = []
+        html_lines = []
+
+        for idx, i in enumerate(items, start=1):
+            prefix = "⭐ " if i["is_featured"] else ""
+            plain_lines.append(f"{prefix}{idx}. {i['matchup']}  ")
+
+            # Rich HTML line with team logos
+            home_logo_html = f'<img src="{i["home_logo"]}" height="16" width="16" /> ' if i.get("home_logo") else ""
+            away_logo_html = f' <img src="{i["away_logo"]}" height="16" width="16" />' if i.get("away_logo") else ""
+            match_str = f"{home_logo_html}{i['matchup']}{away_logo_html}"
+            if i["is_featured"]:
+                html_lines.append(f"<li><b>⭐ {match_str}</b></li>")
+            else:
+                html_lines.append(f"<li>{match_str}</li>")
+
+        plain_body = "\n".join(plain_lines)
+        description = f"{header}\n{plain_body}\n\n{_description(updated_at)}"
+
+        html_body = "".join(html_lines)
+        html_description = (
+            f"<html><body>"
+            f"<h3>{header}</h3>"
+            f"<ol>{html_body}</ol>"
+            f"<p><small>{_description(updated_at)}</small></p>"
+            f"</body></html>"
+        )
 
         # Stable group ID
         item_ids = "-".join(sorted(str(i["id"]) for i in items))
@@ -115,6 +164,7 @@ def parse_matches(data: Dict[str, Any], group_before_knockouts: bool = True) -> 
                 "start_time": start_time,
                 "location": location,
                 "description": description,
+                "html_description": html_description,
                 "stage": stage,
             }
         )
@@ -144,6 +194,14 @@ def create_calendar(matches: Iterable[Dict[str, Any]]) -> Calendar:
         event.duration = timedelta(hours=DEFAULT_EVENT_HOURS)
         event.location = match["location"]
         event.description = match["description"]
+        if match.get("html_description"):
+            event.extra.append(
+                EventContentLine(
+                    name="X-ALT-DESC",
+                    params={"FMTTYPE": ["text/html"]},
+                    value=match["html_description"],
+                )
+            )
         event.transparent = True
         event.status = "CONFIRMED"
         event.uid = f"ucl-{match['id']}@github-pages"
@@ -164,6 +222,12 @@ def _is_knockout_stage(stage: Optional[str]) -> bool:
     return any(k in stage_lower for k in KNOCKOUT_STAGES)
 
 
+def _is_top_club(name: Optional[str]) -> bool:
+    if not name:
+        return False
+    return name.strip().lower() in TOP_CLUBS
+
+
 def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
     competition = (event.get("competitions") or [{}])[0]
     raw_competitors = event.get("competitors") or competition.get("competitors") or []
@@ -177,8 +241,20 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
     else:
         status_type = status if isinstance(status, dict) else {}
 
+    is_featured = _is_top_club(home.get("name")) or _is_top_club(away.get("name"))
     matchup = _matchup_summary(home, away, status_type, start_time, updated_at)
-    summary = f"⚽ {matchup} · {stage}" if stage else f"⚽ {matchup}"
+    prefix = "⭐ " if is_featured else ""
+    summary = f"⚽ {prefix}{matchup} · {stage}" if stage else f"⚽ {prefix}{matchup}"
+
+    home_logo_html = f'<img src="{home["logo"]}" height="16" width="16" /> ' if home.get("logo") else ""
+    away_logo_html = f' <img src="{away["logo"]}" height="16" width="16" />' if away.get("logo") else ""
+    html_description = (
+        f"<html><body>"
+        f"<h3>{matchup}</h3>"
+        f"<p>{home_logo_html}<b>{home['label']}</b> vs <b>{away['label']}</b>{away_logo_html}</p>"
+        f"<p><small>{_description(updated_at)}</small></p>"
+        f"</body></html>"
+    )
 
     return {
         "id": event["id"],
@@ -187,7 +263,13 @@ def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
         "start_time": start_time,
         "location": event.get("location") or _venue(competition.get("venue") or {}),
         "description": _description(updated_at),
+        "html_description": html_description,
         "stage": stage,
+        "is_featured": is_featured,
+        "home_name": home.get("name"),
+        "away_name": away.get("name"),
+        "home_logo": home.get("logo"),
+        "away_logo": away.get("logo"),
     }
 
 
@@ -202,6 +284,7 @@ def _competitors(competitors: Iterable[Dict[str, Any]]) -> List[Dict[str, Option
     for item in competitors:
         team = item.get("team") if isinstance(item.get("team"), dict) else item
         name = team.get("displayName") or team.get("name") or "TBD"
+        logo = team.get("logo") if isinstance(team, dict) else None
         parsed.append(
             {
                 "name": name,
@@ -209,6 +292,7 @@ def _competitors(competitors: Iterable[Dict[str, Any]]) -> List[Dict[str, Option
                 "score": item.get("score"),
                 "home_away": item.get("homeAway"),
                 "order": item.get("order", 99),
+                "logo": logo,
             }
         )
     return parsed
@@ -229,6 +313,7 @@ def _home_away(competitors: List[Dict[str, Optional[str]]]) -> tuple:
                 "score": None,
                 "home_away": None,
                 "order": 99,
+                "logo": None,
             }
         )
     return ordered[0], ordered[1]
