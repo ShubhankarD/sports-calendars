@@ -4,7 +4,7 @@ from collections import defaultdict
 
 from .config import ET, BASE_URL, INCLUDE_BEFORE_TOURNDAY, TOURNAMENT_URL
 from .fetch import fetch_json
-from .flags import team_label
+from .flags import team_label, team_display_label
 
 Match = Dict[str, Optional[object]]
 
@@ -13,6 +13,7 @@ def parse_schedule(
     min_tourn_day: int = INCLUDE_BEFORE_TOURNDAY,
     *,
     group_by_time_event: bool = False,
+    include_placeholders: bool = True,
     tournament_schedule_url: str = TOURNAMENT_URL,
 ) -> List[Match]:
     """Fetch schedule days, traverse day feeds, and build match dictionaries.
@@ -26,6 +27,7 @@ def parse_schedule(
     event_days = schedule_data.get("eventDays", [])
 
     raw_items: List[Dict[str, Optional[object]]] = []
+    covered_dates = set()
 
     for day in event_days:
         tourn_day = day.get("tournDay", 0)
@@ -51,9 +53,13 @@ def parse_schedule(
                     if start_epoch
                     else None
                 )
+                if start_time:
+                    covered_dates.add(start_time.strftime("%Y-%m-%d"))
 
                 t1_label = team_label(match_data.get("team1"))
                 t2_label = team_label(match_data.get("team2"))
+                t1_desc = team_display_label(match_data.get("team1"), include_flag=True)
+                t2_desc = team_display_label(match_data.get("team2"), include_flag=True)
 
                 # Filter out standalone empty TBD placeholder slots without event or round names
                 if (
@@ -79,14 +85,25 @@ def parse_schedule(
                         "start_time": start_time,
                         "t1": t1_label,
                         "t2": t2_label,
+                        "t1_desc": t1_desc,
+                        "t2_desc": t2_desc,
                     }
                 )
+
+    placeholders: List[Match] = []
+    if include_placeholders:
+        placeholders = _generate_placeholders(
+            tournament_schedule_url=tournament_schedule_url,
+            covered_dates=covered_dates,
+        )
 
     if not group_by_time_event:
         matches_all: List[Match] = []
         for it in raw_items:
             p1 = str(it["t1"]).strip() if it.get("t1") else "TBD"
             p2 = str(it["t2"]).strip() if it.get("t2") else "TBD"
+            p1_desc = str(it["t1_desc"]).strip() if it.get("t1_desc") else p1
+            p2_desc = str(it["t2_desc"]).strip() if it.get("t2_desc") else p2
 
             if (p1 == "TBD" and p2 == "TBD") or not p1 or not p2:
                 title = "Match (TBD)"
@@ -102,6 +119,7 @@ def parse_schedule(
             if display_date:
                 description = f"{description} | {display_date}" if description else display_date
 
+
             matches_all.append(
                 {
                     "title": title,
@@ -110,6 +128,7 @@ def parse_schedule(
                     "start_time": it.get("start_time"),
                 }
             )
+        matches_all.extend(placeholders)
         matches_all.sort(key=_sort_key_for_output)
         return matches_all
 
@@ -156,7 +175,10 @@ def parse_schedule(
         header_bits = [_nz(event_name), _nz(round_for_title), _nz(tourn_day_str)]
         header = " | ".join([b for b in header_bits if b])
 
-        line_items = [f"{i['t1']} vs {i['t2']}" for i in items]
+        line_items = [
+            f"{i.get('t1_desc') or i['t1']} vs {i.get('t2_desc') or i['t2']}"
+            for i in items
+        ]
         numbered_lines = [
             f"{idx}. {text}  " for idx, text in enumerate(line_items, start=1)
         ]
@@ -172,8 +194,104 @@ def parse_schedule(
             }
         )
 
+    grouped_results.extend(placeholders)
     grouped_results.sort(key=_sort_key_for_output)
     return grouped_results
+
+
+def _generate_placeholders(
+    tournament_schedule_url: str,
+    covered_dates: set,
+) -> List[Match]:
+    if not tournament_schedule_url:
+        return []
+    try:
+        ts_data = fetch_json(tournament_schedule_url)
+    except Exception:
+        return []
+
+    draws = ts_data.get("tournament_schedule", {}).get("draws", {})
+    placeholders: List[Match] = []
+
+    for _, draw_val in draws.items():
+        for d in draw_val.get("dates", []):
+            date_str = d.get("date")
+            if not date_str or date_str in covered_dates:
+                continue
+
+            for s in d.get("session", []):
+                sid = s.get("session_id")
+                sname = s.get("session_name")
+                link = s.get("link", {}).get("url") if isinstance(s.get("link"), dict) else None
+                for t in s.get("times", []):
+                    start_str = t.get("start", "").strip()
+                    if not start_str:
+                        continue
+                    try:
+                        start_time = datetime.strptime(
+                            f"{date_str} {start_str}", "%Y-%m-%d %I:%M %p"
+                        ).replace(tzinfo=ET)
+                    except Exception:
+                        continue
+
+                    events = t.get("events", [])
+                    clean_events = [
+                        e for e in events if "boy" not in e.lower() and "girl" not in e.lower()
+                    ]
+                    if not clean_events and events:
+                        clean_events = events
+                    if not clean_events:
+                        continue
+
+                    main_singles = [
+                        e for e in clean_events
+                        if "singles" in e.lower() and "wheelchair" not in e.lower()
+                    ]
+                    main_doubles = [
+                        e for e in clean_events
+                        if "doubles" in e.lower() and "wheelchair" not in e.lower()
+                    ]
+
+                    if main_singles:
+                        title = main_singles[0]
+                    elif main_doubles:
+                        title = main_doubles[0]
+                    else:
+                        title = clean_events[0]
+
+                    is_stadium = False
+                    try:
+                        if sid and int(sid) >= 19:
+                            is_stadium = True
+                    except ValueError:
+                        pass
+                    court = "Arthur Ashe Stadium" if is_stadium else "US Open"
+
+                    session_label = f"Session {sid}" if sid else "US Open Session"
+                    if sname:
+                        session_label += f" ({sname})"
+
+                    gate_info = f" | Gate: {t.get('gate')}" if t.get("gate") else ""
+                    header = f"{session_label}{gate_info}"
+                    matchup_note = "🎾 Matchup: TBD (will update as previous rounds conclude)"
+
+                    event_list_text = "\n".join([f"- {ev}" for ev in clean_events])
+                    desc_parts = [header, matchup_note, "", "Scheduled Events:", event_list_text]
+                    if link:
+                        desc_parts.extend(["", f"Tickets & Info: {link}"])
+
+                    description = "\n".join(desc_parts)
+
+                    placeholders.append(
+                        {
+                            "title": title,
+                            "court": court,
+                            "description": description,
+                            "start_time": start_time,
+                        }
+                    )
+
+    return placeholders
 
 
 def _sort_key_for_output(m: Match):
