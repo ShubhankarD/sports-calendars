@@ -8,13 +8,10 @@ from ics.contentline import ContentLine as EventContentLine
 
 
 ESPN_SCOREBOARD_URL = (
-    "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/"
-    "scoreboard?limit=200&dates=20260611-20260719"
+    "https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=soccer&league=fifa.world&dates=20260611-20260719"
 )
-# ESPN intermittently rejects GitHub Actions runner IPs at site.api.  The
-# fittwo endpoint serves the same scoreboard payload and is our fallback.
 ESPN_SCOREBOARD_FALLBACK_URL = (
-    "https://site.web.api.espn.com/apis/fittwo/v3/sports/soccer/fifa.world/"
+    "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/"
     "scoreboard?limit=200&dates=20260611-20260719"
 )
 HEADERS = {
@@ -48,7 +45,14 @@ def fetch_schedule(url: str = ESPN_SCOREBOARD_URL) -> Dict[str, Any]:
 
 def parse_matches(data: Dict[str, Any]) -> List[Dict[str, Any]]:
     updated_at = datetime.now(timezone.utc)
-    matches = [_parse_event(event, updated_at) for event in data.get("events", [])]
+    events = []
+    if "sports" in data:
+        leagues = (data.get("sports") or [{}])[0].get("leagues") or [{}]
+        events = (leagues[0] or {}).get("events") or []
+    else:
+        events = data.get("events") or []
+
+    matches = [_parse_event(event, updated_at) for event in events]
     return sorted(matches, key=lambda match: match["start_time"])
 
 
@@ -89,12 +93,18 @@ def build_calendar(url: str = ESPN_SCOREBOARD_URL) -> Calendar:
 
 def _parse_event(event: Dict[str, Any], updated_at: datetime) -> Dict[str, Any]:
     competition = (event.get("competitions") or [{}])[0]
-    competitors = _competitors(competition.get("competitors", []))
+    competitors = _competitors(event.get("competitors") or competition.get("competitors") or [])
     home, away = _home_away(competitors)
     start_time = _parse_datetime(event.get("date") or competition.get("date"))
-    stage = _stage_name((event.get("season") or {}).get("slug"))
-    status = (competition.get("status") or {}).get("type") or {}
-    matchup = _matchup_summary(home, away, status, start_time, updated_at)
+    season_val = event.get("season")
+    slug = season_val.get("slug") if isinstance(season_val, dict) else None
+    stage = _stage_name(slug)
+    status = event.get("status") or competition.get("status") or {}
+    if isinstance(status, dict) and "type" in status and isinstance(status["type"], dict):
+        status_type = status["type"]
+    else:
+        status_type = status if isinstance(status, dict) else {}
+    matchup = _matchup_summary(home, away, status_type, start_time, updated_at)
     summary = f"{matchup} · {stage}" if stage else matchup
 
     return {

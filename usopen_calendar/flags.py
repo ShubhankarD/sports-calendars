@@ -74,7 +74,7 @@ def _join_names(team: Optional[list]) -> str:
     joined = " & ".join([n for n in names if n])
     return joined
 
-def team_flags(team: Optional[list]) -> str:
+def team_flags(team: Optional[list], fallback: str = "") -> str:
     """Return one or two flags for a team based on IOC codes in the feed."""
     t = (team or [{}])[0]
     iocs: List[Optional[str]] = [t.get("nationA"), t.get("nationB")]
@@ -86,12 +86,43 @@ def team_flags(team: Optional[list]) -> str:
         if iso and iso not in isos:
             isos.append(iso)
     if not isos:
-        return "🎾"
+        return fallback
     if len(isos) == 1:
         return _flag_emoji(isos[0])
     return "/".join(_flag_emoji(c) for c in isos[:2])
 
+def team_display_label(team: Optional[list], include_flag: bool = True) -> str:
+    """Compose '[FlagA] NameA & [FlagB] NameB' with country emojis placed before each player's name."""
+    if not team:
+        return "TBD"
+    t = team[0] if isinstance(team, list) and team else {}
+    parts = []
+
+    pA = t.get("displayNameA")
+    if pA:
+        if include_flag:
+            nA = t.get("nationA")
+            isoA = IOC_TO_ISO2.get(nA.strip().upper()) if nA else None
+            flagA = _flag_emoji(isoA) if isoA else ""
+            parts.append(f"{flagA} {pA}".strip())
+        else:
+            parts.append(pA.strip())
+
+    pB = t.get("displayNameB")
+    if pB:
+        if include_flag:
+            nB = t.get("nationB")
+            isoB = IOC_TO_ISO2.get(nB.strip().upper()) if nB else None
+            flagB = _flag_emoji(isoB) if isoB else ""
+            parts.append(f"{flagB} {pB}".strip())
+        else:
+            parts.append(pB.strip())
+
+    joined = " & ".join(parts)
+    return joined.strip() if joined else "TBD"
+
 def team_label(team: Optional[list]) -> str:
-    """Compose plain text 'NameA & NameB' using _join_names()."""
-    names = _join_names(team)
-    return names.strip() if names else "TBD"
+    """Compose plain text 'NameA & NameB' using team_display_label(include_flag=False)."""
+    return team_display_label(team, include_flag=False)
+
+
