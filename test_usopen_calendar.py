@@ -282,7 +282,7 @@ def test_parse_schedule_with_placeholders(mock_fetch):
     assert len(matches) == 2
 
     # 1st: Actual match
-    assert matches[0]["title"] == "Men's Singles - Round 1"
+    assert matches[0]["title"] == "D. Medvedev vs H. Gaston"
     assert "D. Medvedev vs H. Gaston" in matches[0]["description"]
 
     # 2nd: Placeholder
@@ -332,7 +332,7 @@ def test_parse_schedule_no_placeholders(mock_fetch):
 
     matches = parse_schedule(min_tourn_day=7, group_by_time_event=True, include_placeholders=False)
     assert len(matches) == 1
-    assert matches[0]["title"] == "Men's Singles - Round 1"
+    assert matches[0]["title"] == "D. Medvedev vs H. Gaston"
 
 
 def test_team_display_label_flags():
@@ -391,10 +391,120 @@ def test_grouped_matches_with_country_flags(mock_fetch):
 
     matches = parse_schedule(min_tourn_day=7, group_by_time_event=True, include_placeholders=False)
     assert len(matches) == 1
-    # Plain text in title
-    assert matches[0]["title"] == "Men's Singles - Round 1"
+    # Country emojis in title for single match
+    assert matches[0]["title"] == "🇪🇸 C. Alcaraz vs 🇮🇹 J. Sinner"
     # Country emojis before each player name in description
     assert "1. 🇪🇸 C. Alcaraz vs 🇮🇹 J. Sinner" in matches[0]["description"]
 
 
+def test_estimate_duration():
+    from usopen_calendar.tournament import _estimate_duration
+    from datetime import datetime, timezone
 
+    # Men's singles final
+    assert _estimate_duration(event_name="Men's Singles", round_name="Final") == 4.0
+
+    # Women's singles final
+    assert _estimate_duration(event_name="Women's Singles", round_name="Final") == 2.5
+
+    # Individual men's match
+    assert _estimate_duration(event_name="Men's Singles", round_name="Round 1", match_count=1) == 3.5
+
+    # Individual women's match
+    assert _estimate_duration(event_name="Women's Singles", round_name="Round 1", match_count=1) == 2.0
+
+    # Doubles match
+    assert _estimate_duration(event_name="Men's Doubles", round_name="Round 1", match_count=1) == 2.0
+
+    # Grouped Day session (11:30 AM)
+    day_dt = datetime(2026, 9, 8, 11, 30, tzinfo=timezone.utc)
+    assert _estimate_duration(event_name="Men's & Women's Singles", start_time=day_dt, match_count=4) == 4.5
+
+    # Grouped Night session (7:00 PM)
+    night_dt = datetime(2026, 9, 8, 19, 0, tzinfo=timezone.utc)
+    assert _estimate_duration(event_name="Men's & Women's Singles", start_time=night_dt, match_count=2) == 3.5
+
+
+def test_create_calendar_dynamic_duration():
+    from datetime import datetime, timedelta, timezone
+
+    dt = datetime(2026, 9, 13, 14, 0, tzinfo=timezone.utc)
+    matches = [
+        {
+            "title": "Men's Singles Final",
+            "court": "Arthur Ashe Stadium",
+            "description": "Session 27",
+            "start_time": dt,
+            "duration_hours": 4.0,
+        }
+    ]
+
+    cal = create_calendar(matches)
+    ev = list(cal.events)[0]
+    assert ev.begin == dt
+    assert ev.end == dt + timedelta(hours=4.0)
+
+
+@patch("usopen_calendar.tournament.fetch_json")
+def test_parse_schedule_not_before(mock_fetch):
+    from zoneinfo import ZoneInfo
+    CT = ZoneInfo("America/Chicago")
+
+    def side_effect(url):
+        if "scheduleDays.json" in url:
+            return {
+                "eventDays": [
+                    {
+                        "tournDay": 17,
+                        "feedUrl": "https://www.usopen.org/en_US/scores/feeds/2026/schedule/schedule17.json",
+                    }
+                ]
+            }
+        elif "schedule17.json" in url:
+            return {
+                "displayDate": "Tuesday, September 8",
+                "epoch": 1788881400,
+                "courts": [
+                    {
+                        "courtName": "Arthur Ashe Stadium",
+                        "startEpoch": 1788881400,  # 11:30 AM EDT / 10:30 AM CDT
+                        "matches": [
+                            {
+                                "order": 1,
+                                "eventName": "Women's Singles",
+                                "roundName": "Quarterfinals",
+                                "team1": [{"displayNameA": "A. Sabalenka"}],
+                                "team2": [{"displayNameA": "L. Noskova", "nationA": "CZE"}],
+                            },
+                            {
+                                "order": 2,
+                                "eventName": "Men's Singles",
+                                "roundName": "Quarterfinals",
+                                "notBefore": "1:00 PM",
+                                "team1": [{"displayNameA": "F. Tiafoe", "nationA": "USA"}],
+                                "team2": [{"displayNameA": "A. Michelsen", "nationA": "USA"}],
+                            },
+                        ],
+                    }
+                ],
+            }
+        return {}
+
+    mock_fetch.side_effect = side_effect
+
+    matches = parse_schedule(min_tourn_day=17, group_by_time_event=True, include_placeholders=False)
+    assert len(matches) == 2
+
+    # Match 1 starts at 11:30 AM EDT / 10:30 AM CDT
+    m1 = matches[0]
+    assert m1["title"] == "A. Sabalenka vs 🇨🇿 L. Noskova"
+    assert m1["start_time"].hour == 11
+    assert m1["start_time"].minute == 30
+    assert m1["start_time"].astimezone(CT).hour == 10
+
+    # Match 2 with notBefore: 1:00 PM EDT / 12:00 PM CDT (12 CDT)
+    m2 = matches[1]
+    assert m2["title"] == "🇺🇸 F. Tiafoe vs 🇺🇸 A. Michelsen"
+    assert m2["start_time"].hour == 13
+    assert m2["start_time"].minute == 0
+    assert m2["start_time"].astimezone(CT).hour == 12
