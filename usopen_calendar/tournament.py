@@ -200,7 +200,8 @@ def parse_schedule(
         title_bits = [_nz(event_name), _nz(round_for_title)]
         default_title = " - ".join([b for b in title_bits if b]) or "Match Group"
 
-        if len(items) == 1:
+        is_singles = "singles" in (event_name or "").lower()
+        if len(items) == 1 and is_singles:
             single_it = items[0]
             p1_title = single_it.get("t1_desc") or single_it.get("t1") or "TBD"
             p2_title = single_it.get("t2_desc") or single_it.get("t2") or "TBD"
