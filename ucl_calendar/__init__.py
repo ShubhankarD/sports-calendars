@@ -128,7 +128,7 @@ def parse_matches(data: Dict[str, Any], group_before_knockouts: bool = True) -> 
         plain_lines = []
 
         for idx, i in enumerate(items, start=1):
-            matchup_text = f"**{i['matchup']}**" if i["is_featured"] else i["matchup"]
+            matchup_text = i["matchup"]
             plain_lines.append(f"{idx}. {matchup_text}  ")
 
         plain_body = "\n".join(plain_lines)
