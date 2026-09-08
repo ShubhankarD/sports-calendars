@@ -54,7 +54,14 @@ def create_calendar(matches: List[dict], default_event_hours: int = DEFAULT_EVEN
         start_time = m.get("start_time")
         if start_time:
             ev.begin = start_time
-            ev.end = start_time + timedelta(hours=default_event_hours)
+            if m.get("end_time"):
+                ev.end = m.get("end_time")
+            elif default_event_hours != DEFAULT_EVENT_HOURS:
+                ev.end = start_time + timedelta(hours=default_event_hours)
+            else:
+                dur = m.get("duration_hours")
+                ev.end = start_time + timedelta(hours=dur if dur is not None else default_event_hours)
+
 
         # Transparent = doesn't block busy time in many clients
         ev.transparent = True

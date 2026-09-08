@@ -41,20 +41,41 @@ def parse_schedule(
         courts = day_data.get("courts", [])
         display_date = day_data.get("displayDate")
 
+        day_epoch = day_data.get("epoch")
         for court in courts:
             court_name = court.get("courtName", "Unknown Court")
+            court_base_epoch = court.get("startEpoch") or day_epoch
+
             for match_data in court.get("matches", []):
                 event_name = match_data.get("eventName")
                 round_name = match_data.get("roundName")
 
-                start_epoch = match_data.get("startEpoch") or court.get("startEpoch")
-                start_time: Optional[datetime] = (
-                    datetime.fromtimestamp(start_epoch, tz=timezone.utc).astimezone(ET)
-                    if start_epoch
-                    else None
-                )
+                not_before = match_data.get("notBefore")
+                start_time: Optional[datetime] = None
+                start_epoch: Optional[int] = None
+
+                if not_before and court_base_epoch:
+                    base_dt = datetime.fromtimestamp(court_base_epoch, tz=timezone.utc).astimezone(ET)
+                    date_str = base_dt.strftime("%Y-%m-%d")
+                    try:
+                        start_time = datetime.strptime(
+                            f"{date_str} {not_before.strip()}", "%Y-%m-%d %I:%M %p"
+                        ).replace(tzinfo=ET)
+                        start_epoch = int(start_time.timestamp())
+                    except Exception:
+                        pass
+
+                if start_time is None:
+                    start_epoch = match_data.get("startEpoch") or court.get("startEpoch")
+                    start_time = (
+                        datetime.fromtimestamp(start_epoch, tz=timezone.utc).astimezone(ET)
+                        if start_epoch
+                        else None
+                    )
+
                 if start_time:
                     covered_dates.add(start_time.strftime("%Y-%m-%d"))
+
 
                 t1_label = team_label(match_data.get("team1"))
                 t2_label = team_label(match_data.get("team2"))
@@ -108,7 +129,8 @@ def parse_schedule(
             if (p1 == "TBD" and p2 == "TBD") or not p1 or not p2:
                 title = "Match (TBD)"
             else:
-                title = f"{p1} vs {p2}"
+                title = f"{p1_desc} vs {p2_desc}"
+
 
             event_name = _nz(it.get("eventName"))
             round_name = _nz(it.get("roundName"))
@@ -126,6 +148,12 @@ def parse_schedule(
                     "court": it.get("court") or "Unknown Court",
                     "description": description,
                     "start_time": it.get("start_time"),
+                    "duration_hours": _estimate_duration(
+                        event_name=it.get("eventName"),
+                        round_name=it.get("roundName"),
+                        start_time=it.get("start_time"),
+                        match_count=1,
+                    ),
                 }
             )
         matches_all.extend(placeholders)
@@ -170,7 +198,19 @@ def parse_schedule(
         )
 
         title_bits = [_nz(event_name), _nz(round_for_title)]
-        title = " - ".join([b for b in title_bits if b]) or "Match Group"
+        default_title = " - ".join([b for b in title_bits if b]) or "Match Group"
+
+        if len(items) == 1:
+            single_it = items[0]
+            p1_title = single_it.get("t1_desc") or single_it.get("t1") or "TBD"
+            p2_title = single_it.get("t2_desc") or single_it.get("t2") or "TBD"
+            if p1_title != "TBD" or p2_title != "TBD":
+                title = f"{p1_title} vs {p2_title}"
+            else:
+                title = default_title
+        else:
+            title = default_title
+
 
         header_bits = [_nz(event_name), _nz(round_for_title), _nz(tourn_day_str)]
         header = " | ".join([b for b in header_bits if b])
@@ -191,12 +231,19 @@ def parse_schedule(
                 "court": court_field,
                 "description": description,
                 "start_time": start_time,
+                "duration_hours": _estimate_duration(
+                    event_name=event_name,
+                    round_name=round_for_title,
+                    start_time=start_time,
+                    match_count=len(items),
+                ),
             }
         )
 
     grouped_results.extend(placeholders)
     grouped_results.sort(key=_sort_key_for_output)
     return grouped_results
+
 
 
 def _generate_placeholders(
@@ -288,10 +335,72 @@ def _generate_placeholders(
                             "court": court,
                             "description": description,
                             "start_time": start_time,
+                            "duration_hours": _estimate_duration(
+                                event_name=title,
+                                start_time=start_time,
+                                match_count=len(clean_events),
+                            ),
                         }
                     )
 
     return placeholders
+
+
+def _estimate_duration(
+    event_name: Optional[str] = None,
+    round_name: Optional[str] = None,
+    start_time: Optional[datetime] = None,
+    match_count: int = 1,
+) -> float:
+    """Estimate a realistic match or session duration in hours."""
+    ev_lower = (event_name or "").lower()
+    round_lower = (round_name or "").lower()
+
+    cleaned = ev_lower.replace("women", "")
+    has_women = "women" in ev_lower
+    has_men = "men" in cleaned
+    is_singles = "singles" in ev_lower
+    is_doubles = "doubles" in ev_lower
+
+    # 1. Marquee Finals and Semifinals
+    if any(k in round_lower or k in ev_lower for k in ["final", "semifinal"]):
+        if has_men and not has_women and is_singles:
+            return 4.0  # Best-of-5 men's singles final/semis
+        if has_women and not has_men and is_singles:
+            if "semifinal" in ev_lower or "semifinal" in round_lower:
+                return 3.5 if match_count > 1 or "semifinals" in ev_lower else 2.5
+            return 2.5
+        if is_doubles:
+            return 2.0
+
+    # 2. Multi-match session blocks (>= 2 matches)
+    if match_count > 1:
+        if start_time:
+            hour = start_time.hour
+            if 10 <= hour < 15:
+                return 4.5  # Full afternoon day session
+            elif hour >= 18:
+                return 3.5  # Night session block
+        return 4.0
+
+    # 3. Individual matches
+    if has_men and not has_women and is_singles:
+        return 3.5
+    if has_women and not has_men and is_singles:
+        return 2.0
+    if is_doubles:
+        return 2.0
+
+    # 4. Mixed session blocks (e.g. Men's & Women's Singles Quarterfinals)
+    if start_time:
+        hour = start_time.hour
+        if 10 <= hour < 15:
+            return 4.5
+        elif hour >= 18:
+            return 3.5
+
+    return 2.5
+
 
 
 def _sort_key_for_output(m: Match):
@@ -306,3 +415,4 @@ def _nz(s: Optional[object]) -> Optional[str]:
         return None
     s = str(s).strip()
     return s if s else None
+

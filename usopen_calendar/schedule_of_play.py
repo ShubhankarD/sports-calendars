@@ -26,18 +26,34 @@ def parse_schedule(base_url: str = BASE_URL, min_tourn_day: int = INCLUDE_BEFORE
         courts = day_data.get("courts", [])
         display_date = day_data.get("displayDate")
 
+        day_epoch = day_data.get("epoch")
         for court in courts:
             court_name = court.get("courtName", "Unknown Court")
+            court_base_epoch = court.get("startEpoch") or day_epoch
             for match_data in court.get("matches", []):
                 p1 = team_label(match_data.get("team1"))
                 p2 = team_label(match_data.get("team2"))
 
-                # Some feeds have startEpoch on match OR on court
-                start_epoch = match_data.get("startEpoch") or court.get("startEpoch")
-                start_time = (
-                    datetime.fromtimestamp(start_epoch, tz=timezone.utc).astimezone(ET)
-                    if start_epoch else None
-                )
+                not_before = match_data.get("notBefore")
+                start_time: Optional[datetime] = None
+
+                if not_before and court_base_epoch:
+                    base_dt = datetime.fromtimestamp(court_base_epoch, tz=timezone.utc).astimezone(ET)
+                    date_str = base_dt.strftime("%Y-%m-%d")
+                    try:
+                        start_time = datetime.strptime(
+                            f"{date_str} {not_before.strip()}", "%Y-%m-%d %I:%M %p"
+                        ).replace(tzinfo=ET)
+                    except Exception:
+                        pass
+
+                if start_time is None:
+                    start_epoch = match_data.get("startEpoch") or court.get("startEpoch")
+                    start_time = (
+                        datetime.fromtimestamp(start_epoch, tz=timezone.utc).astimezone(ET)
+                        if start_epoch else None
+                    )
+
 
                 if p1 == "TBD" and p2 == "TBD":
                     title = "Match (TBD)"
