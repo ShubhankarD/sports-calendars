@@ -1,6 +1,9 @@
-name: Publish ICS (hourly)
+name: Publish ICS
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '0 * * * *'  # hourly UTC
   workflow_dispatch:
