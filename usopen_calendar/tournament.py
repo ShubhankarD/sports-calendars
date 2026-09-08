@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import Dict, List, Optional, Tuple
 from collections import defaultdict
 
@@ -8,6 +8,16 @@ from .flags import team_label, team_display_label
 
 Match = Dict[str, Optional[object]]
 
+
+def _round_up_15min(dt: datetime) -> datetime:
+    """Round a datetime up to the nearest 15-minute mark (:00, :15, :30, :45)."""
+    minute = dt.minute
+    remainder = minute % 15
+    if remainder != 0:
+        dt = dt + timedelta(minutes=(15 - remainder))
+    return dt.replace(second=0, microsecond=0)
+
+
 def parse_schedule(
     base_url: str = BASE_URL,
     min_tourn_day: int = INCLUDE_BEFORE_TOURNDAY,
@@ -15,6 +25,7 @@ def parse_schedule(
     group_by_time_event: bool = False,
     include_placeholders: bool = True,
     tournament_schedule_url: str = TOURNAMENT_URL,
+    now_dt: Optional[datetime] = None,
 ) -> List[Match]:
     """Fetch schedule days, traverse day feeds, and build match dictionaries.
 
@@ -28,6 +39,8 @@ def parse_schedule(
 
     raw_items: List[Dict[str, Optional[object]]] = []
     covered_dates = set()
+
+    current_et = now_dt if now_dt is not None else datetime.now(timezone.utc).astimezone(ET)
 
     for day in event_days:
         tourn_day = day.get("tournDay", 0)
@@ -45,6 +58,9 @@ def parse_schedule(
         for court in courts:
             court_name = court.get("courtName", "Unknown Court")
             court_base_epoch = court.get("startEpoch") or day_epoch
+
+            court_busy_until: Optional[datetime] = None
+            active_match_desc: Optional[str] = None
 
             for match_data in court.get("matches", []):
                 event_name = match_data.get("eventName")
@@ -73,14 +89,70 @@ def parse_schedule(
                         else None
                     )
 
-                if start_time:
-                    covered_dates.add(start_time.strftime("%Y-%m-%d"))
-
-
                 t1_label = team_label(match_data.get("team1"))
                 t2_label = team_label(match_data.get("team2"))
                 t1_desc = team_display_label(match_data.get("team1"), include_flag=True)
                 t2_desc = team_display_label(match_data.get("team2"), include_flag=True)
+
+                m_status = match_data.get("status")
+                m_status_code = match_data.get("statusCode")
+                is_in_progress = m_status == "In Progress" or m_status_code == "A"
+                is_completed = m_status == "Completed" or m_status_code in {"D", "E"}
+
+                is_delayed = False
+                delayed_note: Optional[str] = None
+
+                if start_time:
+                    # Case 1: A prior match on the same court is currently In Progress
+                    if court_busy_until and not is_completed and not is_in_progress:
+                        if start_time < court_busy_until:
+                            is_delayed = True
+                            delayed_note = (
+                                f"Estimated start delayed to {court_busy_until.strftime('%-I:%M %p')} ET "
+                                f"(Court in use: {active_match_desc})"
+                                if active_match_desc
+                                else f"Estimated start delayed to {court_busy_until.strftime('%-I:%M %p')} ET"
+                            )
+                            start_time = court_busy_until
+                            start_epoch = int(start_time.timestamp())
+
+                    # Case 2: Today's match is still upcoming, but its scheduled start_time has already passed
+                    elif (
+                        start_time.date() == current_et.date()
+                        and not is_completed
+                        and not is_in_progress
+                        and start_time <= current_et
+                    ):
+                        min_start = _round_up_15min(current_et + timedelta(minutes=15))
+                        is_delayed = True
+                        delayed_note = f"Estimated start delayed to {min_start.strftime('%-I:%M %p')} ET"
+                        start_time = min_start
+                        start_epoch = int(start_time.timestamp())
+
+                # If this match is in progress, update court_busy_until for subsequent matches on this court
+                if is_in_progress and start_time:
+                    active_match_desc = f"{t1_label} vs {t2_label}"
+                    est_dur = _estimate_duration(
+                        event_name=event_name,
+                        round_name=round_name,
+                        start_time=start_time,
+                        match_count=1,
+                    )
+                    est_finish = start_time + timedelta(hours=est_dur)
+                    min_transition = current_et + timedelta(minutes=15)
+                    court_busy_until = _round_up_15min(max(est_finish, min_transition))
+                elif not is_completed and not is_in_progress and start_time and is_delayed:
+                    # Subsequent upcoming matches on the same court follow this match
+                    est_dur = _estimate_duration(
+                        event_name=event_name,
+                        round_name=round_name,
+                        start_time=start_time,
+                        match_count=1,
+                    )
+                    court_busy_until = _round_up_15min(start_time + timedelta(hours=est_dur) + timedelta(minutes=15))
+
+                if start_time:
+                    covered_dates.add(start_time.strftime("%Y-%m-%d"))
 
                 # Filter out standalone empty TBD placeholder slots without event or round names
                 if (
@@ -95,6 +167,7 @@ def parse_schedule(
                 if event_name and ("boy" in event_name.lower() or "girl" in event_name.lower()):
                     continue
 
+                match_id = match_data.get("match_id") or match_data.get("matchId")
                 raw_items.append(
                     {
                         "eventName": event_name,
@@ -108,6 +181,10 @@ def parse_schedule(
                         "t2": t2_label,
                         "t1_desc": t1_desc,
                         "t2_desc": t2_desc,
+                        "match_id": match_id,
+                        "is_delayed": is_delayed,
+                        "delayed_note": delayed_note,
+                        "status": m_status,
                     }
                 )
 
@@ -142,6 +219,10 @@ def parse_schedule(
                 description = f"{description} | {display_date}" if description else display_date
 
 
+            if it.get("delayed_note"):
+                description += f"\n\n⚠️ {it['delayed_note']}"
+            mid = it.get("match_id")
+            uid = f"usopen-{mid}@github-pages" if mid else None
             matches_all.append(
                 {
                     "title": title,
@@ -154,6 +235,7 @@ def parse_schedule(
                         start_time=it.get("start_time"),
                         match_count=1,
                     ),
+                    "uid": uid,
                 }
             )
         matches_all.extend(placeholders)
@@ -201,11 +283,11 @@ def parse_schedule(
         default_title = " - ".join([b for b in title_bits if b]) or "Match Group"
 
         is_singles = "singles" in (event_name or "").lower()
-        if len(items) == 1 and is_singles:
+        if len(items) == 1:
             single_it = items[0]
             p1_title = single_it.get("t1_desc") or single_it.get("t1") or "TBD"
             p2_title = single_it.get("t2_desc") or single_it.get("t2") or "TBD"
-            if p1_title != "TBD" or p2_title != "TBD":
+            if is_singles and (p1_title != "TBD" or p2_title != "TBD"):
                 title = f"{p1_title} vs {p2_title}"
             else:
                 title = default_title
@@ -226,6 +308,21 @@ def parse_schedule(
         body = "\n".join(numbered_lines)
         description = header + "\n" + body if header else body
 
+        delayed_notes = [str(i["delayed_note"]) for i in items if i.get("delayed_note")]
+        if delayed_notes:
+            description += "\n\n⚠️ " + "\n⚠️ ".join(delayed_notes)
+
+        date_bucket = start_time.strftime("%Y-%m-%d") if start_time else "date"
+        if len(items) == 1:
+            single_it = items[0]
+            mid = single_it.get("match_id")
+            if mid:
+                uid = f"usopen-{mid}@github-pages"
+            else:
+                uid = f"usopen-{date_bucket}-{court_field}-{_nz(p1_title)}-{_nz(p2_title)}@github-pages"
+        else:
+            uid = f"usopen-group-{date_bucket}-{court_field}-{event_name}-{round_for_title}@github-pages"
+
         grouped_results.append(
             {
                 "title": title,
@@ -238,6 +335,7 @@ def parse_schedule(
                     start_time=start_time,
                     match_count=len(items),
                 ),
+                "uid": uid,
             }
         )
 

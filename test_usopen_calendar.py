@@ -494,7 +494,8 @@ def test_parse_schedule_not_before(mock_fetch):
 
     mock_fetch.side_effect = side_effect
 
-    matches = parse_schedule(min_tourn_day=17, group_by_time_event=True, include_placeholders=False)
+    morning_time = datetime(2026, 9, 8, 10, 0, tzinfo=ZoneInfo("America/New_York"))
+    matches = parse_schedule(min_tourn_day=17, group_by_time_event=True, include_placeholders=False, now_dt=morning_time)
     assert len(matches) == 2
 
     # Match 1 starts at 11:30 AM EDT / 10:30 AM CDT
@@ -510,6 +511,80 @@ def test_parse_schedule_not_before(mock_fetch):
     assert m2["start_time"].hour == 13
     assert m2["start_time"].minute == 0
     assert m2["start_time"].astimezone(CT).hour == 12
+
+
+@patch("usopen_calendar.tournament.fetch_json")
+def test_parse_schedule_delayed_by_live_match(mock_fetch):
+    from zoneinfo import ZoneInfo
+    from datetime import datetime
+    ET_zone = ZoneInfo("America/New_York")
+    CT_zone = ZoneInfo("America/Chicago")
+
+    def side_effect(url):
+        if "scheduleDays.json" in url:
+            return {
+                "eventDays": [
+                    {
+                        "tournDay": 17,
+                        "feedUrl": "https://www.usopen.org/en_US/scores/feeds/2026/schedule/schedule17.json",
+                    }
+                ]
+            }
+        elif "schedule17.json" in url:
+            return {
+                "displayDate": "Tuesday, September 8",
+                "epoch": 1788881400,
+                "courts": [
+                    {
+                        "courtName": "Arthur Ashe Stadium",
+                        "startEpoch": 1788881400,  # 11:30 AM EDT
+                        "matches": [
+                            {
+                                "order": 1,
+                                "eventName": "Women's Singles",
+                                "roundName": "Quarterfinals",
+                                "status": "In Progress",
+                                "statusCode": "A",
+                                "team1": [{"displayNameA": "A. Sabalenka"}],
+                                "team2": [{"displayNameA": "L. Noskova", "nationA": "CZE"}],
+                            },
+                            {
+                                "order": 2,
+                                "eventName": "Men's Singles",
+                                "roundName": "Quarterfinals",
+                                "notBefore": "1:00 PM",
+                                "status": None,
+                                "statusCode": "B",
+                                "team1": [{"displayNameA": "F. Tiafoe", "nationA": "USA"}],
+                                "team2": [{"displayNameA": "A. Michelsen", "nationA": "USA"}],
+                            },
+                        ],
+                    }
+                ],
+            }
+        return {}
+
+    mock_fetch.side_effect = side_effect
+
+    # Simulate 1:55 PM EDT (when match 1 is running long past 1:00 PM)
+    current_time = datetime(2026, 9, 8, 13, 55, tzinfo=ET_zone)
+    matches = parse_schedule(
+        min_tourn_day=17,
+        group_by_time_event=True,
+        include_placeholders=False,
+        now_dt=current_time,
+    )
+    assert len(matches) == 2
+
+    # Match 2 (Tiafoe) delayed from 1:00 PM to 2:15 PM EDT (1:15 PM CDT)
+    m2 = matches[1]
+    assert m2["title"] == "🇺🇸 F. Tiafoe vs 🇺🇸 A. Michelsen"
+    assert m2["start_time"].hour == 14
+    assert m2["start_time"].minute == 15
+    assert m2["start_time"].astimezone(CT_zone).hour == 13
+    assert m2["start_time"].astimezone(CT_zone).minute == 15
+    assert "Estimated start delayed to 2:15 PM ET" in m2["description"]
+    assert "Court in use: A. Sabalenka vs L. Noskova" in m2["description"]
 
 
 @patch("usopen_calendar.tournament.fetch_json")

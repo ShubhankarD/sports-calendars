@@ -67,7 +67,10 @@ def create_calendar(matches: List[dict], default_event_hours: int = DEFAULT_EVEN
         ev.transparent = True
 
         # Deterministic UID so updates replace (not duplicate)
-        ev.uid = _stable_uid(ev.summary, ev.location or "", getattr(ev, "begin", None))
+        if m.get("uid"):
+            ev.uid = m["uid"]
+        else:
+            ev.uid = _stable_uid(ev.summary, ev.location or "", getattr(ev, "begin", None))
 
         # Optional VEVENT extras (example if you want to add a URL)
         # add_vevent_extras(ev, {"URL": "https://www.usopen.org/"})
