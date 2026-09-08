@@ -413,8 +413,10 @@ def test_estimate_duration():
     # Individual women's match
     assert _estimate_duration(event_name="Women's Singles", round_name="Round 1", match_count=1) == 2.0
 
-    # Doubles match
-    assert _estimate_duration(event_name="Men's Doubles", round_name="Round 1", match_count=1) == 2.0
+    # Doubles match reminder style (15 minutes = 0.25h)
+    assert _estimate_duration(event_name="Men's Doubles", round_name="Round 1", match_count=1) == 0.25
+    assert _estimate_duration(event_name="Women's Doubles", round_name="Round 1", match_count=5) == 0.25
+    assert _estimate_duration(event_name="Mixed Doubles", round_name="Final", match_count=1) == 0.25
 
     # Grouped Day session (11:30 AM)
     day_dt = datetime(2026, 9, 8, 11, 30, tzinfo=timezone.utc)

@@ -353,15 +353,21 @@ def _estimate_duration(
     start_time: Optional[datetime] = None,
     match_count: int = 1,
 ) -> float:
-    """Estimate a realistic match or session duration in hours."""
+    """Estimate a realistic match or session duration in hours.
+    Doubles events are treated as short 15-minute (0.25h) reminder-style events
+    to prevent calendar clutter, while dynamic durations apply to singles matches/sessions.
+    """
     ev_lower = (event_name or "").lower()
     round_lower = (round_name or "").lower()
+
+    # Doubles acts as a short reminder-style event (15 mins) to keep calendar uncluttered
+    if "doubles" in ev_lower:
+        return 0.25
 
     cleaned = ev_lower.replace("women", "")
     has_women = "women" in ev_lower
     has_men = "men" in cleaned
     is_singles = "singles" in ev_lower
-    is_doubles = "doubles" in ev_lower
 
     # 1. Marquee Finals and Semifinals
     if any(k in round_lower or k in ev_lower for k in ["final", "semifinal"]):
@@ -371,8 +377,6 @@ def _estimate_duration(
             if "semifinal" in ev_lower or "semifinal" in round_lower:
                 return 3.5 if match_count > 1 or "semifinals" in ev_lower else 2.5
             return 2.5
-        if is_doubles:
-            return 2.0
 
     # 2. Multi-match session blocks (>= 2 matches)
     if match_count > 1:
@@ -388,8 +392,6 @@ def _estimate_duration(
     if has_men and not has_women and is_singles:
         return 3.5
     if has_women and not has_men and is_singles:
-        return 2.0
-    if is_doubles:
         return 2.0
 
     # 4. Mixed session blocks (e.g. Men's & Women's Singles Quarterfinals)
