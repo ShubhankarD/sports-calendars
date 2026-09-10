@@ -66,12 +66,6 @@ jobs:
           echo "📄 Contents of site/:"
           ls -la site
 
-      - name: Upload site as artifact (debug)
-        uses: actions/upload-artifact@v4
-        with:
-          name: site
-          path: site
-
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:

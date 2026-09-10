@@ -34,7 +34,7 @@ webcal://ShubhankarD.github.io/sports-calendars/ucl_schedule.ics
 2. Go to **Settings → Pages**:
    - **Source**: select **Deploy from a branch**
    - **Branch**: choose `gh-pages` / `/ (root)`
-3. Run the workflow manually once (**Actions → Publish ICS (hourly) → Run workflow**).
+3. Run the workflow manually once (**Actions → Publish ICS → Run workflow**).
 4. Copy the `.ics` URL and subscribe in your calendar:
    - **Google Calendar**: Settings → *Add calendar* → *From URL* → paste HTTPS URL
    - **Apple Calendar**: *File → New Calendar Subscription…* → paste `webcal://` or HTTPS
