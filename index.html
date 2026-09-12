@@ -1,0 +1,15 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Sports Calendars</title>
+<h1>Sports Calendars</h1>
+<p>Subscribe with these URLs:</p>
+<ul>
+  <li>US Open 2026: <code id="usopen-url"></code></li>
+  <li>UEFA Champions League: <code id="ucl-url"></code></li>
+</ul>
+<script>
+  const base = location.origin + location.pathname.replace(/\/?$/, '/');
+  document.getElementById('usopen-url').textContent = base + 'usopen_schedule.ics';
+  document.getElementById('ucl-url').textContent = base + 'ucl_schedule.ics';
+</script>
+<p>Apple Calendar users can also try the same URLs with <code>webcal://</code>.</p>
