@@ -127,3 +127,5 @@ def test_fetch_schedule(mock_get):
     data = fetch_schedule()
     assert data == {"sports": []}
     mock_get.assert_called_once()
+    called_url = mock_get.call_args[0][0]
+    assert "limit=500" in called_url

@@ -66,7 +66,7 @@ def fetch_schedule(url: Optional[str] = None) -> Dict[str, Any]:
         season_start_year = now.year if now.month >= 7 else now.year - 1
         season_end_year = season_start_year + 1
         dates_param = f"{season_start_year}0801-{season_end_year}0701"
-        url = f"{ESPN_UCL_SCOREBOARD_URL}&dates={dates_param}"
+        url = f"{ESPN_UCL_SCOREBOARD_URL}&dates={dates_param}&limit=500"
 
     urls = [url]
     if url.startswith(ESPN_UCL_SCOREBOARD_URL):
