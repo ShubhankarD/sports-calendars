@@ -312,7 +312,7 @@ def parse_schedule(
         if delayed_notes:
             description += "\n\n⚠️ " + "\n⚠️ ".join(delayed_notes)
 
-        date_bucket = start_time.strftime("%Y-%m-%d") if start_time else "date"
+        date_bucket = start_time.strftime("%Y-%m-%dT%H%M") if start_time else "date"
         if len(items) == 1:
             single_it = items[0]
             mid = single_it.get("match_id")
