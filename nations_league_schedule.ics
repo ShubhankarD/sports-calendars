@@ -5,12 +5,12 @@ METHOD:PUBLISH
 BEGIN:VEVENT
 DTSTART:20260924T160000Z
 DURATION:PT2H
-SUMMARY:Andorra vs Malta · Group D1
+SUMMARY:🇦🇩 Andorra vs 🇲🇹 Malta · Group D1
 UID:unl-401861047@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Estadi de la FAF d'Encamp
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -19,15 +19,15 @@ DTSTART:20260924T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-b5158f5413@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Netherlands vs Germany 
- (Group A2)  \n2. Norway vs Denmark (Group A4)  \n3. Portugal vs Wales 
- (Group A4)  \n4. Austria vs Israel (Group B3)  \n5. Serbia vs Greece 
- (Group A2)  \n6. Kosovo vs Republic of Ireland (Group B3)  \n7. 
- Liechtenstein vs Lithuania (Group D2)  \n\nLast updated: Nov 23\, 2026 at 
- 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇳🇱 Netherlands vs 🇩🇪 
+ Germany (Group A2)  \n2. 🇳🇴 Norway vs 🇩🇰 Denmark (Group A4)  \n3. 🇵🇹 
+ Portugal vs 🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales (Group A4)  \n4. 🇦🇹 Austria vs 🇮🇱 Israel (Group 
+ B3)  \n5. 🇷🇸 Serbia vs 🇬🇷 Greece (Group A2)  \n6. 🇱🇮 Liechtenstein vs 🇱🇹 
+ Lithuania (Group D2)  \n7. 🇽🇰 Kosovo vs 🇮🇪 Republic of Ireland (Group B3)
+   \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -36,12 +36,12 @@ DTSTART:20260925T160000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-bc2e9316c1@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Armenia vs Latvia (Group 
- C2)  \n2. Georgia vs Northern Ireland (Group B2)  \n\nLast updated: Nov 
- 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇦🇲 Armenia vs 🇱🇻 Latvia 
+ (Group C2)  \n2. 🇬🇪 Georgia vs 🇬🇧 Northern Ireland (Group B2)  \n\nLast 
+ updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -50,26 +50,26 @@ DTSTART:20260925T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-93c891f322@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Italy vs Belgium (Group 
- A1)  \n2. Türkiye vs France (Group A1)  \n3. Poland vs Bosnia-Herzegovina 
- (Group B4)  \n4. Sweden vs Romania (Group B4)  \n5. Hungary vs Ukraine 
- (Group B2)  \n6. Montenegro vs Cyprus (Group C2)  \n\nLast updated: Nov 
- 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇮🇹 Italy vs 🇧🇪 Belgium 
+ (Group A1)  \n2. 🇹🇷 Türkiye vs 🇫🇷 France (Group A1)  \n3. 🇵🇱 Poland vs 🇧🇦 
+ Bosnia-Herzegovina (Group B4)  \n4. 🇸🇪 Sweden vs 🇷🇴 Romania (Group B4)  
+ \n5. 🇭🇺 Hungary vs 🇺🇦 Ukraine (Group B2)  \n6. 🇲🇪 Montenegro vs 🇨🇾 Cyprus 
+ (Group C2)  \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20260926T130000Z
 DURATION:PT2H
-SUMMARY:Slovenia vs Scotland · Group B1
+SUMMARY:🇸🇮 Slovenia vs 🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland · Group B1
 UID:unl-401861057@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Stadion Stozice
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -78,13 +78,13 @@ DTSTART:20260926T160000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-ac089a24b9@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Bulgaria vs Luxembourg 
- (Group C4)  \n2. Faroe Islands vs Kazakhstan (Group C3)  \n3. Iceland vs 
- Estonia (Group C4)  \n4. San Marino vs Finland (Group C1)  \n\nLast 
- updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇧🇬 Bulgaria vs 🇱🇺 
+ Luxembourg (Group C4)  \n2. 🇫🇴 Faroe Islands vs 🇰🇿 Kazakhstan (Group C3)  
+ \n3. 🇮🇸 Iceland vs 🇪🇪 Estonia (Group C4)  \n4. 🇸🇲 San Marino vs 🇫🇮 Finland
+  (Group C1)  \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -93,25 +93,26 @@ DTSTART:20260926T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-da5a43edb4@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Czechia vs Croatia (Group
-  A3)  \n2. England vs Spain (Group A3)  \n3. North Macedonia vs 
- Switzerland (Group B1)  \n4. Albania vs Belarus (Group C1)  \n5. Slovakia 
- vs Moldova (Group C3)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇨🇿 Czechia vs 🇭🇷 Croatia 
+ (Group A3)  \n2. 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England vs 🇪🇸 Spain (Group A3)  \n3. 🇲🇰 North 
+ Macedonia vs 🇨🇭 Switzerland (Group B1)  \n4. 🇦🇱 Albania vs 🇧🇾 Belarus 
+ (Group C1)  \n5. 🇸🇰 Slovakia vs 🇲🇩 Moldova (Group C3)  \n\nLast updated: 
+ Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20260927T130000Z
 DURATION:PT2H
-SUMMARY:Lithuania vs Azerbaijan · Group D2
+SUMMARY:🇱🇹 Lithuania vs 🇦🇿 Azerbaijan · Group D2
 UID:unl-401861067@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:S. Darius and S. Gireno Stadium
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -120,13 +121,13 @@ DTSTART:20260927T160000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-1dc2e41627@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Denmark vs Wales (Group 
- A4)  \n2. Serbia vs Netherlands (Group A2)  \n3. Austria vs Kosovo (Group 
- B3)  \n4. Gibraltar vs Andorra (Group D1)  \n\nLast updated: Nov 23\, 2026
-  at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇩🇰 Denmark vs 🏴󠁧󠁢󠁷󠁬󠁳󠁿 
+ Wales (Group A4)  \n2. 🇷🇸 Serbia vs 🇳🇱 Netherlands (Group A2)  \n3. 🇦🇹 
+ Austria vs 🇽🇰 Kosovo (Group B3)  \n4. 🇬🇮 Gibraltar vs 🇦🇩 Andorra (Group 
+ D1)  \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -135,12 +136,13 @@ DTSTART:20260927T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-e95b3357da@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Germany vs Greece (Group 
- A2)  \n2. Norway vs Portugal (Group A4)  \n3. Israel vs Republic of 
- Ireland (Group B3)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇩🇪 Germany vs 🇬🇷 Greece 
+ (Group A2)  \n2. 🇳🇴 Norway vs 🇵🇹 Portugal (Group A4)  \n3. 🇮🇱 Israel vs 🇮🇪
+  Republic of Ireland (Group B3)  \n\nLast updated: Nov 23\, 2026 at 03:03 
+ UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -149,12 +151,13 @@ DTSTART:20260928T160000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-7817e676a8@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Armenia vs Montenegro 
- (Group C2)  \n2. Georgia vs Ukraine (Group B2)  \n3. Latvia vs Cyprus 
- (Group C2)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇦🇲 Armenia vs 🇲🇪 
+ Montenegro (Group C2)  \n2. 🇬🇪 Georgia vs 🇺🇦 Ukraine (Group B2)  \n3. 🇱🇻 
+ Latvia vs 🇨🇾 Cyprus (Group C2)  \n\nLast updated: Nov 23\, 2026 at 03:03 
+ UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -163,13 +166,14 @@ DTSTART:20260928T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-60156f6c0a@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Belgium vs France (Group 
- A1)  \n2. Türkiye vs Italy (Group A1)  \n3. Sweden vs Poland (Group B4)  
- \n4. Northern Ireland vs Hungary (Group B2)  \n5. Romania vs Bosnia-
- Herzegovina (Group B4)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇧🇪 Belgium vs 🇫🇷 France 
+ (Group A1)  \n2. 🇹🇷 Türkiye vs 🇮🇹 Italy (Group A1)  \n3. 🇸🇪 Sweden vs 🇵🇱 
+ Poland (Group B4)  \n4. 🇬🇧 Northern Ireland vs 🇭🇺 Hungary (Group B2)  \n5.
+  🇷🇴 Romania vs 🇧🇦 Bosnia-Herzegovina (Group B4)  \n\nLast updated: Nov 
+ 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -178,12 +182,12 @@ DTSTART:20260929T160000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-3f88b610cd@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Finland vs Belarus (Group
-  C1)  \n2. Moldova vs Faroe Islands (Group C3)  \n\nLast updated: Nov 23\,
-  2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇫🇮 Finland vs 🇧🇾 Belarus 
+ (Group C1)  \n2. 🇲🇩 Moldova vs 🇫🇴 Faroe Islands (Group C3)  \n\nLast 
+ updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -192,27 +196,28 @@ DTSTART:20260929T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-4e37464f5c@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Czechia vs England (Group
-  A3)  \n2. Spain vs Croatia (Group A3)  \n3. Scotland vs Switzerland 
- (Group B1)  \n4. Bulgaria vs Estonia (Group C4)  \n5. Luxembourg vs 
- Iceland (Group C4)  \n6. San Marino vs Albania (Group C1)  \n7. Slovakia 
- vs Kazakhstan (Group C3)  \n8. Slovenia vs North Macedonia (Group B1)  
- \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇨🇿 Czechia vs 🏴󠁧󠁢󠁥󠁮󠁧󠁿 
+ England (Group A3)  \n2. 🇪🇸 Spain vs 🇭🇷 Croatia (Group A3)  \n3. 🏴󠁧󠁢󠁳󠁣󠁴󠁿 
+ Scotland vs 🇨🇭 Switzerland (Group B1)  \n4. 🇧🇬 Bulgaria vs 🇪🇪 Estonia 
+ (Group C4)  \n5. 🇱🇺 Luxembourg vs 🇮🇸 Iceland (Group C4)  \n6. 🇸🇮 Slovenia 
+ vs 🇲🇰 North Macedonia (Group B1)  \n7. 🇸🇰 Slovakia vs 🇰🇿 Kazakhstan (Group
+  C3)  \n8. 🇸🇲 San Marino vs 🇦🇱 Albania (Group C1)  \n\nLast updated: Nov 
+ 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20261001T160000Z
 DURATION:PT2H
-SUMMARY:Azerbaijan vs Liechtenstein · Group D2
+SUMMARY:🇦🇿 Azerbaijan vs 🇱🇮 Liechtenstein · Group D2
 UID:unl-401861093@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Tofiq Bahramov Republican Stadiu
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -221,26 +226,27 @@ DTSTART:20261001T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-a3d448c479@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Denmark vs Portugal 
- (Group A4)  \n2. Germany vs Serbia (Group A2)  \n3. Greece vs Netherlands 
- (Group A2)  \n4. Wales vs Norway (Group A4)  \n5. Republic of Ireland vs 
- Austria (Group B3)  \n6. Israel vs Kosovo (Group B3)  \n7. Malta vs 
- Gibraltar (Group D1)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇩🇪 Germany vs 🇷🇸 Serbia 
+ (Group A2)  \n2. 🇩🇰 Denmark vs 🇵🇹 Portugal (Group A4)  \n3. 🇬🇷 Greece vs 
+ 🇳🇱 Netherlands (Group A2)  \n4. 🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales vs 🇳🇴 Norway (Group A4)  
+ \n5. 🇮🇪 Republic of Ireland vs 🇦🇹 Austria (Group B3)  \n6. 🇮🇱 Israel vs 🇽🇰
+  Kosovo (Group B3)  \n7. 🇲🇹 Malta vs 🇬🇮 Gibraltar (Group D1)  \n\nLast 
+ updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20261002T140000Z
 DURATION:PT2H
-SUMMARY:Kazakhstan vs Moldova · Group C3
+SUMMARY:🇰🇿 Kazakhstan vs 🇲🇩 Moldova · Group C3
 UID:unl-401861101@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Astana Arena
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -249,12 +255,12 @@ DTSTART:20261002T160000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-a011307e3f@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Cyprus vs Armenia (Group 
- C2)  \n2. Latvia vs Montenegro (Group C2)  \n\nLast updated: Nov 23\, 2026
-  at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇨🇾 Cyprus vs 🇦🇲 Armenia 
+ (Group C2)  \n2. 🇱🇻 Latvia vs 🇲🇪 Montenegro (Group C2)  \n\nLast updated: 
+ Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -263,26 +269,27 @@ DTSTART:20261002T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-b209a71e62@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Belgium vs Türkiye (Group
-  A1)  \n2. France vs Italy (Group A1)  \n3. Bosnia-Herzegovina vs Sweden 
- (Group B4)  \n4. Poland vs Romania (Group B4)  \n5. Faroe Islands vs 
- Slovakia (Group C3)  \n6. Hungary vs Georgia (Group B2)  \n7. Ukraine vs 
- Northern Ireland (Group B2)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇧🇪 Belgium vs 🇹🇷 Türkiye 
+ (Group A1)  \n2. 🇫🇷 France vs 🇮🇹 Italy (Group A1)  \n3. 🇧🇦 Bosnia-
+ Herzegovina vs 🇸🇪 Sweden (Group B4)  \n4. 🇵🇱 Poland vs 🇷🇴 Romania (Group 
+ B4)  \n5. 🇫🇴 Faroe Islands vs 🇸🇰 Slovakia (Group C3)  \n6. 🇭🇺 Hungary vs 
+ 🇬🇪 Georgia (Group B2)  \n7. 🇺🇦 Ukraine vs 🇬🇧 Northern Ireland (Group B2)  
+ \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20261003T130000Z
 DURATION:PT2H
-SUMMARY:Finland vs Albania · Group C1
+SUMMARY:🇫🇮 Finland vs 🇦🇱 Albania · Group C1
 UID:unl-401861111@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Helsinki Olympic Stadium
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -291,13 +298,13 @@ DTSTART:20261003T160000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-aa24d0e373@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Croatia vs England (Group
-  A3)  \n2. Belarus vs San Marino (Group C1)  \n3. Estonia vs Luxembourg 
- (Group C4)  \n4. Iceland vs Bulgaria (Group C4)  \n\nLast updated: Nov 
- 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇭🇷 Croatia vs 🏴󠁧󠁢󠁥󠁮󠁧󠁿 
+ England (Group A3)  \n2. 🇧🇾 Belarus vs 🇸🇲 San Marino (Group C1)  \n3. 🇪🇪 
+ Estonia vs 🇱🇺 Luxembourg (Group C4)  \n4. 🇮🇸 Iceland vs 🇧🇬 Bulgaria (Group
+  C4)  \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -306,24 +313,25 @@ DTSTART:20261003T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-e0b70e1ac0@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Spain vs Czechia (Group 
- A3)  \n2. North Macedonia vs Scotland (Group B1)  \n3. Switzerland vs 
- Slovenia (Group B1)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇪🇸 Spain vs 🇨🇿 Czechia 
+ (Group A3)  \n2. 🇨🇭 Switzerland vs 🇸🇮 Slovenia (Group B1)  \n3. 🇲🇰 North 
+ Macedonia vs 🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland (Group B1)  \n\nLast updated: Nov 23\, 2026 
+ at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20261004T130000Z
 DURATION:PT2H
-SUMMARY:Azerbaijan vs Lithuania · Group D2
+SUMMARY:🇦🇿 Azerbaijan vs 🇱🇹 Lithuania · Group D2
 UID:unl-401861119@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Neftçi Arena
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -332,12 +340,12 @@ DTSTART:20261004T160000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-ee79616d9d@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Kosovo vs Austria (Group 
- B3)  \n2. Malta vs Andorra (Group D1)  \n\nLast updated: Nov 23\, 2026 at 
- 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇽🇰 Kosovo vs 🇦🇹 Austria 
+ (Group B3)  \n2. 🇲🇹 Malta vs 🇦🇩 Andorra (Group D1)  \n\nLast updated: Nov 
+ 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -346,25 +354,26 @@ DTSTART:20261004T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-9730471796@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Greece vs Germany (Group 
- A2)  \n2. Netherlands vs Serbia (Group A2)  \n3. Portugal vs Norway (Group
-  A4)  \n4. Wales vs Denmark (Group A4)  \n5. Republic of Ireland vs Israel
-  (Group B3)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇬🇷 Greece vs 🇩🇪 Germany 
+ (Group A2)  \n2. 🇳🇱 Netherlands vs 🇷🇸 Serbia (Group A2)  \n3. 🇵🇹 Portugal 
+ vs 🇳🇴 Norway (Group A4)  \n4. 🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales vs 🇩🇰 Denmark (Group A4)  \n5.
+  🇮🇪 Republic of Ireland vs 🇮🇱 Israel (Group B3)  \n\nLast updated: Nov 
+ 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20261005T160000Z
 DURATION:PT2H
-SUMMARY:Cyprus vs Latvia · Group C2
+SUMMARY:🇨🇾 Cyprus vs 🇱🇻 Latvia · Group C2
 UID:unl-401861127@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:GSP Stadium
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -373,26 +382,27 @@ DTSTART:20261005T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-0ff187f229@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. France vs Belgium (Group 
- A1)  \n2. Italy vs Türkiye (Group A1)  \n3. Bosnia-Herzegovina vs Poland 
- (Group B4)  \n4. Romania vs Sweden (Group B4)  \n5. Montenegro vs Armenia 
- (Group C2)  \n6. Northern Ireland vs Georgia (Group B2)  \n7. Ukraine vs 
- Hungary (Group B2)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇫🇷 France vs 🇧🇪 Belgium 
+ (Group A1)  \n2. 🇮🇹 Italy vs 🇹🇷 Türkiye (Group A1)  \n3. 🇧🇦 Bosnia-
+ Herzegovina vs 🇵🇱 Poland (Group B4)  \n4. 🇷🇴 Romania vs 🇸🇪 Sweden (Group 
+ B4)  \n5. 🇬🇧 Northern Ireland vs 🇬🇪 Georgia (Group B2)  \n6. 🇲🇪 Montenegro
+  vs 🇦🇲 Armenia (Group C2)  \n7. 🇺🇦 Ukraine vs 🇭🇺 Hungary (Group B2)  
+ \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20261006T140000Z
 DURATION:PT2H
-SUMMARY:Kazakhstan vs Faroe Islands · Group C3
+SUMMARY:🇰🇿 Kazakhstan vs 🇫🇴 Faroe Islands · Group C3
 UID:unl-401861135@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Astana Arena
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -401,15 +411,16 @@ DTSTART:20261006T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-315925490b@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Croatia vs Spain (Group 
- A3)  \n2. England vs Czechia (Group A3)  \n3. Scotland vs Slovenia (Group 
- B1)  \n4. Switzerland vs North Macedonia (Group B1)  \n5. Albania vs San 
- Marino (Group C1)  \n6. Belarus vs Finland (Group C1)  \n7. Estonia vs 
- Iceland (Group C4)  \n8. Luxembourg vs Bulgaria (Group C4)  \n9. Moldova 
- vs Slovakia (Group C3)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇭🇷 Croatia vs 🇪🇸 Spain 
+ (Group A3)  \n2. 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England vs 🇨🇿 Czechia (Group A3)  \n3. 🇨🇭 
+ Switzerland vs 🇲🇰 North Macedonia (Group B1)  \n4. 🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland vs 🇸🇮 
+ Slovenia (Group B1)  \n5. 🇦🇱 Albania vs 🇸🇲 San Marino (Group C1)  \n6. 🇧🇾 
+ Belarus vs 🇫🇮 Finland (Group C1)  \n7. 🇪🇪 Estonia vs 🇮🇸 Iceland (Group C4)
+   \n8. 🇱🇺 Luxembourg vs 🇧🇬 Bulgaria (Group C4)  \n9. 🇲🇩 Moldova vs 🇸🇰 
+ Slovakia (Group C3)  \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -418,12 +429,12 @@ DTSTART:20261112T170000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-8e1fa5e7d7@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Türkiye vs Belgium (Group
-  A1)  \n2. Armenia vs Cyprus (Group C2)  \n\nLast updated: Nov 23\, 2026 
- at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇹🇷 Türkiye vs 🇧🇪 Belgium 
+ (Group A1)  \n2. 🇦🇲 Armenia vs 🇨🇾 Cyprus (Group C2)  \n\nLast updated: Nov
+  23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -432,26 +443,26 @@ DTSTART:20261112T194500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-fc44b0551b@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Czechia vs Spain (Group 
- A3)  \n2. England vs Croatia (Group A3)  \n3. Italy vs France (Group A1)  
- \n4. Albania vs Finland (Group C1)  \n5. Montenegro vs Latvia (Group C2)  
- \n6. San Marino vs Belarus (Group C1)  \n\nLast updated: Nov 23\, 2026 at 
- 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇨🇿 Czechia vs 🇪🇸 Spain 
+ (Group A3)  \n2. 🇮🇹 Italy vs 🇫🇷 France (Group A1)  \n3. 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England vs
+  🇭🇷 Croatia (Group A3)  \n4. 🇦🇱 Albania vs 🇫🇮 Finland (Group C1)  \n5. 🇲🇪 
+ Montenegro vs 🇱🇻 Latvia (Group C2)  \n6. 🇸🇲 San Marino vs 🇧🇾 Belarus 
+ (Group C1)  \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20261113T170000Z
 DURATION:PT2H
-SUMMARY:Moldova vs Kazakhstan · Group C3
+SUMMARY:🇲🇩 Moldova vs 🇰🇿 Kazakhstan · Group C3
 UID:unl-401861162@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Stadionul Zimbru
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -460,28 +471,29 @@ DTSTART:20261113T194500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-f9da565889@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Netherlands vs Greece 
- (Group A2)  \n2. Serbia vs Germany (Group A2)  \n3. Scotland vs North 
- Macedonia (Group B1)  \n4. Slovenia vs Switzerland (Group B1)  \n5. 
- Andorra vs Gibraltar (Group D1)  \n6. Bulgaria vs Iceland (Group C4)  \n7.
-  Liechtenstein vs Azerbaijan (Group D2)  \n8. Luxembourg vs Estonia (Group
-  C4)  \n9. Slovakia vs Faroe Islands (Group C3)  \n\nLast updated: Nov 
- 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇳🇱 Netherlands vs 🇬🇷 
+ Greece (Group A2)  \n2. 🇷🇸 Serbia vs 🇩🇪 Germany (Group A2)  \n3. 🇸🇮 
+ Slovenia vs 🇨🇭 Switzerland (Group B1)  \n4. 🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland vs 🇲🇰 North 
+ Macedonia (Group B1)  \n5. 🇦🇩 Andorra vs 🇬🇮 Gibraltar (Group D1)  \n6. 🇧🇬 
+ Bulgaria vs 🇮🇸 Iceland (Group C4)  \n7. 🇱🇮 Liechtenstein vs 🇦🇿 Azerbaijan 
+ (Group D2)  \n8. 🇱🇺 Luxembourg vs 🇪🇪 Estonia (Group C4)  \n9. 🇸🇰 Slovakia 
+ vs 🇫🇴 Faroe Islands (Group C3)  \n\nLast updated: Nov 23\, 2026 at 03:03 
+ UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20261114T140000Z
 DURATION:PT2H
-SUMMARY:Kosovo vs Israel · Group B3
+SUMMARY:🇽🇰 Kosovo vs 🇮🇱 Israel · Group B3
 UID:unl-401861163@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Stadiumi Fadil Vokrri
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -490,12 +502,12 @@ DTSTART:20261114T170000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-b86f44e42d@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Norway vs Wales (Group 
- A4)  \n2. Georgia vs Hungary (Group B2)  \n\nLast updated: Nov 23\, 2026 
- at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇳🇴 Norway vs 🏴󠁧󠁢󠁷󠁬󠁳󠁿 
+ Wales (Group A4)  \n2. 🇬🇪 Georgia vs 🇭🇺 Hungary (Group B2)  \n\nLast 
+ updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -504,14 +516,14 @@ DTSTART:20261114T194500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-358fe7c154@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Portugal vs Denmark 
- (Group A4)  \n2. Austria vs Republic of Ireland (Group B3)  \n3. Romania 
- vs Poland (Group B4)  \n4. Sweden vs Bosnia-Herzegovina (Group B4)  \n5. 
- Northern Ireland vs Ukraine (Group B2)  \n\nLast updated: Nov 23\, 2026 at
-  02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇵🇹 Portugal vs 🇩🇰 Denmark
+  (Group A4)  \n2. 🇦🇹 Austria vs 🇮🇪 Republic of Ireland (Group B3)  \n3. 🇷🇴
+  Romania vs 🇵🇱 Poland (Group B4)  \n4. 🇸🇪 Sweden vs 🇧🇦 Bosnia-Herzegovina 
+ (Group B4)  \n5. 🇬🇧 Northern Ireland vs 🇺🇦 Ukraine (Group B2)  \n\nLast 
+ updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -520,12 +532,12 @@ DTSTART:20261115T140000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-19f91f48a2@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Cyprus vs Montenegro 
- (Group C2)  \n2. Latvia vs Armenia (Group C2)  \n\nLast updated: Nov 23\, 
- 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇨🇾 Cyprus vs 🇲🇪 
+ Montenegro (Group C2)  \n2. 🇱🇻 Latvia vs 🇦🇲 Armenia (Group C2)  \n\nLast 
+ updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -534,12 +546,12 @@ DTSTART:20261115T170000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-486b7079ab@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Belarus vs Albania (Group
-  C1)  \n2. Finland vs San Marino (Group C1)  \n\nLast updated: Nov 23\, 
- 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇧🇾 Belarus vs 🇦🇱 Albania 
+ (Group C1)  \n2. 🇫🇮 Finland vs 🇸🇲 San Marino (Group C1)  \n\nLast updated:
+  Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -548,13 +560,13 @@ DTSTART:20261115T194500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-dc45edea0e@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Belgium vs Italy (Group 
- A1)  \n2. Croatia vs Czechia (Group A3)  \n3. France vs Türkiye (Group A1)
-   \n4. Spain vs England (Group A3)  \n\nLast updated: Nov 23\, 2026 at 
- 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇧🇪 Belgium vs 🇮🇹 Italy 
+ (Group A1)  \n2. 🇪🇸 Spain vs 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England (Group A3)  \n3. 🇫🇷 France vs
+  🇹🇷 Türkiye (Group A1)  \n4. 🇭🇷 Croatia vs 🇨🇿 Czechia (Group A3)  \n\nLast
+  updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -563,12 +575,12 @@ DTSTART:20261116T150000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-30a748ac20@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Faroe Islands vs Moldova 
- (Group C3)  \n2. Kazakhstan vs Slovakia (Group C3)  \n\nLast updated: Nov 
- 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇫🇴 Faroe Islands vs 🇲🇩 
+ Moldova (Group C3)  \n2. 🇰🇿 Kazakhstan vs 🇸🇰 Slovakia (Group C3)  \n\nLast
+  updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -577,12 +589,13 @@ DTSTART:20261116T170000Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-9091a85221@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Estonia vs Bulgaria 
- (Group C4)  \n2. Iceland vs Luxembourg (Group C4)  \n3. Lithuania vs 
- Liechtenstein (Group D2)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇪🇪 Estonia vs 🇧🇬 Bulgaria
+  (Group C4)  \n2. 🇮🇸 Iceland vs 🇱🇺 Luxembourg (Group C4)  \n3. 🇱🇹 
+ Lithuania vs 🇱🇮 Liechtenstein (Group D2)  \n\nLast updated: Nov 23\, 2026 
+ at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -591,13 +604,14 @@ DTSTART:20261116T194500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-002330ac02@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Germany vs Netherlands 
- (Group A2)  \n2. Switzerland vs Scotland (Group B1)  \n3. Greece vs Serbia
-  (Group A2)  \n4. Gibraltar vs Malta (Group D1)  \n5. North Macedonia vs 
- Slovenia (Group B1)  \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇩🇪 Germany vs 🇳🇱 
+ Netherlands (Group A2)  \n2. 🇨🇭 Switzerland vs 🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland (Group B1)
+   \n3. 🇬🇷 Greece vs 🇷🇸 Serbia (Group A2)  \n4. 🇬🇮 Gibraltar vs 🇲🇹 Malta 
+ (Group D1)  \n5. 🇲🇰 North Macedonia vs 🇸🇮 Slovenia (Group B1)  \n\nLast 
+ updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -606,51 +620,52 @@ DTSTART:20261117T194500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Group Stage
 UID:unl-group-a911e1db01@github-pages
-DESCRIPTION:UEFA Nations League | Group Stage\n1. Denmark vs Norway (Group 
- A4)  \n2. Wales vs Portugal (Group A4)  \n3. Israel vs Austria (Group B3)
-   \n4. Poland vs Sweden (Group B4)  \n5. Bosnia-Herzegovina vs Romania 
- (Group B4)  \n6. Hungary vs Northern Ireland (Group B2)  \n7. Republic of 
- Ireland vs Kosovo (Group B3)  \n8. Ukraine vs Georgia (Group B2)  \n\nLast
-  updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Group Stage\n1. 🇩🇰 Denmark vs 🇳🇴 Norway 
+ (Group A4)  \n2. 🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales vs 🇵🇹 Portugal (Group A4)  \n3. 🇮🇱 Israel 
+ vs 🇦🇹 Austria (Group B3)  \n4. 🇵🇱 Poland vs 🇸🇪 Sweden (Group B4)  \n5. 🇧🇦 
+ Bosnia-Herzegovina vs 🇷🇴 Romania (Group B4)  \n6. 🇭🇺 Hungary vs 🇬🇧 
+ Northern Ireland (Group B2)  \n7. 🇮🇪 Republic of Ireland vs 🇽🇰 Kosovo 
+ (Group B3)  \n8. 🇺🇦 Ukraine vs 🇬🇪 Georgia (Group B2)  \n\nLast updated: 
+ Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270325T170000Z
 DURATION:PT2H
-SUMMARY:Cyprus vs North Macedonia · Promotion/Relegation Playoffs
+SUMMARY:🇨🇾 Cyprus vs 🇲🇰 North Macedonia · Promotion/Relegation Playoffs
 UID:unl-401936083@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270325T194500Z
 DURATION:PT2H
-SUMMARY:Belgium vs Germany · Quarterfinals
+SUMMARY:🇧🇪 Belgium vs 🇩🇪 Germany · Quarterfinals
 UID:unl-401936102@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270325T194500Z
 DURATION:PT2H
-SUMMARY:Spain vs France · Quarterfinals
+SUMMARY:🇪🇸 Spain vs 🇫🇷 France · Quarterfinals
 UID:unl-401936104@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -659,60 +674,60 @@ DTSTART:20270325T194500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Promotion/Relegation Playoffs
 UID:unl-group-d2d65d0bb3@github-pages
-DESCRIPTION:UEFA Nations League | Promotion/Relegation Playoffs\n1. Bosnia-
- Herzegovina vs Denmark  \n2. Belarus vs Israel  \n3. Hungary vs Serbia  
- \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Promotion/Relegation Playoffs\n1. 🇧🇦 
+ Bosnia-Herzegovina vs 🇩🇰 Denmark  \n2. 🇧🇾 Belarus vs 🇮🇱 Israel  \n3. 🇭🇺 
+ Hungary vs 🇷🇸 Serbia  \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270327T140000Z
 DURATION:PT2H
-SUMMARY:Faroe Islands vs Georgia · Promotion/Relegation Playoffs
+SUMMARY:🇫🇴 Faroe Islands vs 🇬🇪 Georgia · Promotion/Relegation Playoffs
 UID:unl-401936082@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270327T170000Z
 DURATION:PT2H
-SUMMARY:Norway vs England · Quarterfinals
+SUMMARY:🇳🇴 Norway vs 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England · Quarterfinals
 UID:unl-401936091@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270327T170000Z
 DURATION:PT2H
-SUMMARY:Estonia vs Romania · Promotion/Relegation Playoffs
+SUMMARY:🇪🇪 Estonia vs 🇷🇴 Romania · Promotion/Relegation Playoffs
 UID:unl-401936096@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270327T194500Z
 DURATION:PT2H
-SUMMARY:Netherlands vs Portugal · Quarterfinals
+SUMMARY:🇳🇱 Netherlands vs 🇵🇹 Portugal · Quarterfinals
 UID:unl-401936103@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -721,60 +736,60 @@ DTSTART:20270327T194500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Promotion/Relegation Playoffs
 UID:unl-group-ce7443a678@github-pages
-DESCRIPTION:UEFA Nations League | Promotion/Relegation Playoffs\n1. 
- Republic of Ireland vs Croatia  \n2. Slovenia vs Wales  \n\nLast updated: 
- Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Promotion/Relegation Playoffs\n1. 🇮🇪 
+ Republic of Ireland vs 🇭🇷 Croatia  \n2. 🇸🇮 Slovenia vs 🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales  
+ \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270328T130000Z
 DURATION:PT2H
-SUMMARY:North Macedonia vs Cyprus · Promotion/Relegation Playoffs
+SUMMARY:🇲🇰 North Macedonia vs 🇨🇾 Cyprus · Promotion/Relegation Playoffs
 UID:unl-401936081@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270328T160000Z
 DURATION:PT2H
-SUMMARY:Serbia vs Hungary · Promotion/Relegation Playoffs
+SUMMARY:🇷🇸 Serbia vs 🇭🇺 Hungary · Promotion/Relegation Playoffs
 UID:unl-401936086@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270328T184500Z
 DURATION:PT2H
-SUMMARY:France vs Spain · Quarterfinals
+SUMMARY:🇫🇷 France vs 🇪🇸 Spain · Quarterfinals
 UID:unl-401936101@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270328T184500Z
 DURATION:PT2H
-SUMMARY:Germany vs Belgium · Quarterfinals
+SUMMARY:🇩🇪 Germany vs 🇧🇪 Belgium · Quarterfinals
 UID:unl-401936089@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -783,48 +798,48 @@ DTSTART:20270328T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Promotion/Relegation Playoffs
 UID:unl-group-f1a3985784@github-pages
-DESCRIPTION:UEFA Nations League | Promotion/Relegation Playoffs\n1. Denmark
-  vs Bosnia-Herzegovina  \n2. Israel vs Belarus  \n\nLast updated: Nov 23\,
-  2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Promotion/Relegation Playoffs\n1. 🇩🇰 
+ Denmark vs 🇧🇦 Bosnia-Herzegovina  \n2. 🇮🇱 Israel vs 🇧🇾 Belarus  \n\nLast 
+ updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270330T160000Z
 DURATION:PT2H
-SUMMARY:Georgia vs Faroe Islands · Promotion/Relegation Playoffs
+SUMMARY:🇬🇪 Georgia vs 🇫🇴 Faroe Islands · Promotion/Relegation Playoffs
 UID:unl-401936093@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270330T184500Z
 DURATION:PT2H
-SUMMARY:England vs Norway · Quarterfinals
+SUMMARY:🏴󠁧󠁢󠁥󠁮󠁧󠁿 England vs 🇳🇴 Norway · Quarterfinals
 UID:unl-401936090@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Wembley Stadium
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
 BEGIN:VEVENT
 DTSTART:20270330T184500Z
 DURATION:PT2H
-SUMMARY:Portugal vs Netherlands · Quarterfinals
+SUMMARY:🇵🇹 Portugal vs 🇳🇱 Netherlands · Quarterfinals
 UID:unl-401936100@github-pages
-DESCRIPTION:Last updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:Last updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT
@@ -833,12 +848,12 @@ DTSTART:20270330T184500Z
 DURATION:PT2H
 SUMMARY:UEFA Nations League - Promotion/Relegation Playoffs
 UID:unl-group-ec9391546e@github-pages
-DESCRIPTION:UEFA Nations League | Promotion/Relegation Playoffs\n1. Croatia
-  vs Republic of Ireland  \n2. Romania vs Estonia  \n3. Wales vs Slovenia  
- \n\nLast updated: Nov 23\, 2026 at 02:56 UTC
+DESCRIPTION:UEFA Nations League | Promotion/Relegation Playoffs\n1. 🇭🇷 
+ Croatia vs 🇮🇪 Republic of Ireland  \n2. 🇷🇴 Romania vs 🇪🇪 Estonia  \n3. 
+ 🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales vs 🇸🇮 Slovenia  \n\nLast updated: Nov 23\, 2026 at 03:03 UTC
 LOCATION:Multiple Venues
 STATUS:CONFIRMED
-DTSTAMP:20261123T025621Z
+DTSTAMP:20261123T030339Z
 TRANSPARENT:TRUE
 SEQUENCE:1
 END:VEVENT

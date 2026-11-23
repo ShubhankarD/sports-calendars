@@ -49,8 +49,8 @@ def test_parse_matches_grouped_across_groups_with_featured_first():
     assert len(matches) == 1
     m = matches[0]
     assert m["summary"] == "UEFA Nations League - Group Stage"
-    assert "1. France vs Spain (Group A1)" in m["description"]
-    assert "2. San Marino vs Liechtenstein (Group D1)" in m["description"]
+    assert "1. 🇫🇷 France vs 🇪🇸 Spain (Group A1)" in m["description"]
+    assert "2. 🇸🇲 San Marino vs 🇱🇮 Liechtenstein (Group D1)" in m["description"]
 
 
 def test_parse_matches_knockout_individual():
@@ -80,7 +80,7 @@ def test_parse_matches_knockout_individual():
 
     matches = parse_matches(mock_data, group_before_knockouts=True)
     assert len(matches) == 1
-    assert matches[0]["summary"] == "Germany vs Italy · Quarterfinals"
+    assert matches[0]["summary"] == "🇩🇪 Germany vs 🇮🇹 Italy · Quarterfinals"
 
 
 def test_create_calendar():

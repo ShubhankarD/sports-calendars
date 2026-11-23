@@ -253,16 +253,153 @@ def _competitors(competitors: Iterable[Dict[str, Any]]) -> List[Dict[str, Option
     for item in competitors:
         team = item.get("team") if isinstance(item.get("team"), dict) else item
         name = team.get("displayName") or team.get("name") or "TBD"
+        abbreviation = team.get("abbreviation") or item.get("abbreviation")
         parsed.append(
             {
                 "name": name,
-                "label": name,
+                "label": _team_label(name, abbreviation),
                 "score": item.get("score"),
                 "home_away": item.get("homeAway"),
                 "order": item.get("order", 99),
             }
         )
     return parsed
+
+
+def _team_label(name: str, abbreviation: Optional[str]) -> str:
+    flag = _flag(abbreviation, name)
+    return f"{flag} {name}" if flag else name
+
+
+UEFA_FLAGS = {
+    "ALB": "🇦🇱",
+    "AND": "🇦🇩",
+    "ARM": "🇦🇲",
+    "AUT": "🇦🇹",
+    "AZE": "🇦🇿",
+    "BLR": "🇧🇾",
+    "BEL": "🇧🇪",
+    "BIH": "🇧🇦",
+    "BUL": "🇧🇬",
+    "CRO": "🇭🇷",
+    "CYP": "🇨🇾",
+    "CZE": "🇨🇿",
+    "DEN": "🇩🇰",
+    "ENG": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    "EST": "🇪🇪",
+    "FRO": "🇫🇴",
+    "FIN": "🇫🇮",
+    "FRA": "🇫🇷",
+    "GEO": "🇬🇪",
+    "GER": "🇩🇪",
+    "GIB": "🇬🇮",
+    "GRE": "🇬🇷",
+    "HUN": "🇭🇺",
+    "ISL": "🇮🇸",
+    "ISR": "🇮🇱",
+    "ITA": "🇮🇹",
+    "KAZ": "🇰🇿",
+    "KOS": "🇽🇰",
+    "KVX": "🇽🇰",
+    "LVA": "🇱🇻",
+    "LAT": "🇱🇻",
+    "LIE": "🇱🇮",
+    "LTU": "🇱🇹",
+    "LUX": "🇱🇺",
+    "MLT": "🇲🇹",
+    "MDA": "🇲🇩",
+    "MNE": "🇲🇪",
+    "NED": "🇳🇱",
+    "MKD": "🇲🇰",
+    "NIR": "🇬🇧",
+    "NOR": "🇳🇴",
+    "POL": "🇵🇱",
+    "POR": "🇵🇹",
+    "IRL": "🇮🇪",
+    "ROU": "🇷🇴",
+    "SMR": "🇸🇲",
+    "SCO": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+    "SRB": "🇷🇸",
+    "SVK": "🇸🇰",
+    "SVN": "🇸🇮",
+    "ESP": "🇪🇸",
+    "SWE": "🇸🇪",
+    "SUI": "🇨🇭",
+    "TUR": "🇹🇷",
+    "UKR": "🇺🇦",
+    "WAL": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+}
+
+UEFA_FLAGS_BY_NAME = {
+    "albania": "🇦🇱",
+    "andorra": "🇦🇩",
+    "armenia": "🇦🇲",
+    "austria": "🇦🇹",
+    "azerbaijan": "🇦🇿",
+    "belarus": "🇧🇾",
+    "belgium": "🇧🇪",
+    "bosnia and herzegovina": "🇧🇦",
+    "bosnia & herzegovina": "🇧🇦",
+    "bulgaria": "🇧🇬",
+    "croatia": "🇭🇷",
+    "cyprus": "🇨🇾",
+    "czechia": "🇨🇿",
+    "czech republic": "🇨🇿",
+    "denmark": "🇩🇰",
+    "england": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    "estonia": "🇪🇪",
+    "faroe islands": "🇫🇴",
+    "finland": "🇫🇮",
+    "france": "🇫🇷",
+    "georgia": "🇬🇪",
+    "germany": "🇩🇪",
+    "gibraltar": "🇬🇮",
+    "greece": "🇬🇷",
+    "hungary": "🇭🇺",
+    "iceland": "🇮🇸",
+    "israel": "🇮🇱",
+    "italy": "🇮🇹",
+    "kazakhstan": "🇰🇿",
+    "kosovo": "🇽🇰",
+    "latvia": "🇱🇻",
+    "liechtenstein": "🇱🇮",
+    "lithuania": "🇱🇹",
+    "luxembourg": "🇱🇺",
+    "malta": "🇲🇹",
+    "moldova": "🇲🇩",
+    "montenegro": "🇲🇪",
+    "netherlands": "🇳🇱",
+    "north macedonia": "🇲🇰",
+    "northern ireland": "🇬🇧",
+    "norway": "🇳🇴",
+    "poland": "🇵🇱",
+    "portugal": "🇵🇹",
+    "republic of ireland": "🇮🇪",
+    "ireland": "🇮🇪",
+    "romania": "🇷🇴",
+    "san marino": "🇸🇲",
+    "scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+    "serbia": "🇷🇸",
+    "slovakia": "🇸🇰",
+    "slovenia": "🇸🇮",
+    "spain": "🇪🇸",
+    "sweden": "🇸🇪",
+    "switzerland": "🇨🇭",
+    "turkey": "🇹🇷",
+    "türkiye": "🇹🇷",
+    "ukraine": "🇺🇦",
+    "wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+}
+
+
+def _flag(abbreviation: Optional[str], name: Optional[str] = None) -> Optional[str]:
+    if abbreviation:
+        flag = UEFA_FLAGS.get(abbreviation.strip().upper())
+        if flag:
+            return flag
+    if name:
+        return UEFA_FLAGS_BY_NAME.get(name.strip().lower())
+    return None
 
 
 def _home_away(competitors: List[Dict[str, Optional[str]]]) -> tuple:
